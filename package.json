@@ -1,0 +1,9 @@
+{
+  "name": "guitar-triads",
+  "version": "1.0.0",
+  "description": "Guitar triad flashcards, fretboard diagrams, and interactive test",
+  "scripts": {
+    "start": "npx serve public",
+    "dev": "npx serve public"
+  }
+}
