@@ -53,17 +53,7 @@
   .diagram-card .notes { text-align: center; color: #666; margin-top: 8px; font-size: 14px; }
   .diagram-legend { display: flex; gap: 20px; justify-content: center; margin-top: 10px; font-size: 13px; color: #666; }
   .diagram-legend span { display: flex; align-items: center; gap: 5px; }
-  .root-note-bar { display: flex; gap: 6px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
-  .root-note-bar button { width: 48px; height: 48px; border-radius: 10px; border: 2px solid #ddd; background: #fff; color: #333; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.15s; }
-  .root-note-bar button:hover { border-color: #e07030; background: #fdf5f0; }
-  .root-note-bar button.active { background: #e07030; color: #fff; border-color: #e07030; }
-  .diagram-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-  .quality-tabs { display: flex; gap: 0; }
-  .quality-tabs button { padding: 10px 20px; border: 1px solid #ccc; background: #f0f0eb; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; border-right: none; }
-  .quality-tabs button:first-child { border-radius: 8px 0 0 8px; }
-  .quality-tabs button:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid #ccc; }
-  .quality-tabs button.active { background: #e07030; color: #fff; border-color: #e07030; }
-  .string-set-tabs { display: flex; gap: 0; }
+  .string-set-tabs { display: flex; gap: 0; margin-bottom: 15px; }
   .string-set-tabs button { padding: 10px 24px; border: 1px solid #ccc; background: #f0f0eb; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; border-right: none; }
   .string-set-tabs button:first-child { border-radius: 8px 0 0 8px; }
   .string-set-tabs button:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid #ccc; }
@@ -164,18 +154,20 @@
 
 <div id="diagrams" class="tab">
   <h1>Triad Fretboard Diagrams</h1>
-  <div class="root-note-bar no-print" id="rootNoteBar"></div>
-  <div class="diagram-controls no-print">
-    <div class="quality-tabs" id="qualityTabs">
-      <button class="active" onclick="selectQuality('all', this)">All</button>
-      <button onclick="selectQuality('major', this)">Major</button>
-      <button onclick="selectQuality('minor', this)">Minor</button>
-    </div>
-    <div class="string-set-tabs" id="stringSetTabs">
-      <button class="active" onclick="selectStringSet(1, this)">G-B-E (strings 3-2-1)</button>
-      <button onclick="selectStringSet(0, this)">D-G-B (strings 4-3-2)</button>
-      <button onclick="selectStringSet(2, this)">A-D-G (strings 5-4-3)</button>
-    </div>
+  <div class="diagram-filters no-print">
+    <select id="diagChord" onchange="renderDiagrams()">
+      <option value="all">All Chords</option>
+    </select>
+    <select id="diagQuality" onchange="renderDiagrams()">
+      <option value="all">Major & Minor</option>
+      <option value="major">Major Only</option>
+      <option value="minor">Minor Only</option>
+    </select>
+  </div>
+  <div class="string-set-tabs no-print" id="stringSetTabs">
+    <button class="active" onclick="selectStringSet(1, this)">G-B-E (strings 3-2-1)</button>
+    <button onclick="selectStringSet(0, this)">D-G-B (strings 4-3-2)</button>
+    <button onclick="selectStringSet(2, this)">A-D-G (strings 5-4-3)</button>
   </div>
   <div class="diagram-grid" id="diagramGrid"></div>
 </div>
@@ -790,8 +782,6 @@ function resetCards() { buildFCCards(); }
 
 // ===== DIAGRAMS =====
 let currentStringSet = 1; // Default to G-B-E (strings 3-2-1)
-let currentRoot = 'all';
-let currentQuality = 'all';
 
 function selectStringSet(idx, btn) {
   currentStringSet = idx;
@@ -800,38 +790,16 @@ function selectStringSet(idx, btn) {
   renderDiagrams();
 }
 
-function selectRoot(root, btn) {
-  currentRoot = (currentRoot === root) ? 'all' : root; // toggle off if same
-  document.querySelectorAll('.root-note-bar button').forEach(b => b.classList.remove('active'));
-  if (currentRoot !== 'all' && btn) btn.classList.add('active');
-  renderDiagrams();
-}
-
-function selectQuality(qual, btn) {
-  currentQuality = qual;
-  document.querySelectorAll('.quality-tabs button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  renderDiagrams();
-}
-
-function initRootNoteBar() {
-  const bar = document.getElementById('rootNoteBar');
-  for (const n of NOTES) {
-    const btn = document.createElement('button');
-    btn.textContent = ENHARMONIC(n).split('/')[0]; // show sharp version
-    btn.onclick = () => selectRoot(n, btn);
-    bar.appendChild(btn);
-  }
-}
-
 function renderDiagrams() {
+  const chordFilter = document.getElementById('diagChord').value;
+  const qualFilter = document.getElementById('diagQuality').value;
   const grid = document.getElementById('diagramGrid');
   grid.innerHTML = '';
 
   let chords = ALL_CHORDS;
-  if (currentRoot !== 'all') chords = chords.filter(c => c.root === currentRoot);
-  if (currentQuality === 'major') chords = chords.filter(c => c.quality === 'major');
-  if (currentQuality === 'minor') chords = chords.filter(c => c.quality === 'minor');
+  if (chordFilter !== 'all') chords = chords.filter(c => c.root === chordFilter);
+  if (qualFilter === 'major') chords = chords.filter(c => c.quality === 'major');
+  if (qualFilter === 'minor') chords = chords.filter(c => c.quality === 'minor');
 
   const ss = STRING_SETS[currentStringSet];
 
@@ -1048,8 +1016,13 @@ function showTab(id) {
 
 // ===== INIT =====
 window.addEventListener('DOMContentLoaded', () => {
-  // Initialize root note bar for diagrams
-  initRootNoteBar();
+  // Populate chord filter dropdown
+  const sel = document.getElementById('diagChord');
+  for (const n of NOTES) {
+    const opt = document.createElement('option');
+    opt.value = n; opt.textContent = ENHARMONIC(n);
+    sel.appendChild(opt);
+  }
 
   // Attach change handlers for flashcard controls
   document.getElementById('fcMode').addEventListener('change', buildFCCards);
