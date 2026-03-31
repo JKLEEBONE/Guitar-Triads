@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guitar Triad Flashcards & Test</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f0; color: #333; }
+
+  /* Navigation */
+  .nav { display: flex; background: #fff; padding: 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #ddd; }
+  .nav button { flex: 1; padding: 14px; border: none; background: #fff; color: #888; font-size: 16px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .nav button.active { color: #333; border-bottom-color: #e07030; background: #f5f5f0; }
+  .nav button:hover { color: #333; }
+
+  .tab { display: none; padding: 20px; max-width: 1200px; margin: 0 auto; }
+  .tab.active { display: block; }
+
+  h1 { text-align: center; margin: 20px 0; color: #e07030; font-size: 28px; }
+  h2 { color: #e07030; margin: 20px 0 10px; }
+  h3 { color: #555; margin: 10px 0; }
+
+  /* Flashcards */
+  .fc-controls { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; align-items: center; }
+  .fc-controls label { color: #666; }
+  .fc-controls select, .fc-controls button { padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #333; font-size: 14px; cursor: pointer; }
+  .fc-controls button { background: #e07030; border: none; color: #fff; font-weight: bold; }
+  .fc-controls button:hover { background: #c8612a; }
+
+  .flashcard-container { display: flex; justify-content: center; align-items: center; min-height: 350px; perspective: 1000px; }
+  .flashcard { width: 500px; height: 300px; cursor: pointer; position: relative; transform-style: preserve-3d; transition: transform 0.5s; }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .flashcard .front, .flashcard .back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; }
+  .flashcard .front { background: #fff; border: 2px solid #e07030; }
+  .flashcard .back { background: #fafaf5; border: 2px solid #53a653; transform: rotateY(180deg); }
+  .flashcard .label { font-size: 14px; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; }
+  .flashcard .main-text { font-size: 32px; font-weight: bold; color: #333; text-align: center; }
+  .flashcard .sub-text { font-size: 16px; color: #666; margin-top: 10px; }
+  .fc-nav { display: flex; gap: 20px; justify-content: center; margin: 20px 0; }
+  .fc-nav button { padding: 10px 30px; border-radius: 8px; border: none; background: #555; color: #fff; font-size: 16px; cursor: pointer; }
+  .fc-nav button:hover { background: #e07030; }
+  .fc-progress { text-align: center; color: #888; margin: 10px 0; }
+
+  /* Diagrams */
+  .diagram-filters { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+  .diagram-filters select { padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #333; font-size: 14px; }
+  .diagram-grid { display: flex; flex-direction: column; gap: 30px; margin: 20px 0; }
+  .diagram-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .diagram-card h4 { color: #e07030; margin-bottom: 4px; font-size: 18px; }
+  .diagram-card .inv-label { color: #888; font-size: 13px; margin-bottom: 12px; }
+  .diagram-card canvas { display: block; margin: 0 auto; }
+  .diagram-card .notes { text-align: center; color: #666; margin-top: 8px; font-size: 14px; }
+  .diagram-legend { display: flex; gap: 20px; justify-content: center; margin-top: 10px; font-size: 13px; color: #666; }
+  .diagram-legend span { display: flex; align-items: center; gap: 5px; }
+  .string-set-tabs { display: flex; gap: 0; margin-bottom: 15px; }
+  .string-set-tabs button { padding: 10px 24px; border: 1px solid #ccc; background: #f0f0eb; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; border-right: none; }
+  .string-set-tabs button:first-child { border-radius: 8px 0 0 8px; }
+  .string-set-tabs button:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid #ccc; }
+  .string-set-tabs button.active { background: #e07030; color: #fff; border-color: #e07030; }
+
+  /* Test Dashboard */
+  .test-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; flex-wrap: wrap; gap: 10px; }
+  .test-stats { display: flex; gap: 20px; }
+  .stat-box { background: #fff; padding: 12px 20px; border-radius: 10px; text-align: center; min-width: 100px; border: 1px solid #ddd; }
+  .stat-box .num { font-size: 28px; font-weight: bold; color: #e07030; }
+  .stat-box .lbl { font-size: 12px; color: #888; text-transform: uppercase; }
+  .test-area { display: flex; flex-direction: column; align-items: center; min-height: 400px; }
+  .test-question { font-size: 24px; margin: 30px 0 20px; text-align: center; color: #333; }
+  .test-question .highlight { color: #e07030; font-weight: bold; font-size: 30px; }
+  .test-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 600px; }
+  .test-options button { padding: 16px; border-radius: 10px; border: 2px solid #ddd; background: #fff; color: #333; font-size: 18px; cursor: pointer; transition: all 0.2s; }
+  .test-options button:hover { border-color: #e07030; background: #fdf5f0; }
+  .test-options button.correct { border-color: #53a653; background: #f0f8f0; color: #2d7a2d; }
+  .test-options button.wrong { border-color: #d44; background: #fdf0f0; color: #c33; }
+  .test-options button:disabled { cursor: default; opacity: 0.7; }
+  .test-next { margin-top: 20px; padding: 12px 40px; border-radius: 8px; border: none; background: #e07030; color: #fff; font-size: 16px; cursor: pointer; display: none; }
+  .test-next:hover { background: #c8612a; }
+  .test-config { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .test-config select, .test-config button { padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #333; font-size: 14px; cursor: pointer; }
+  .test-config button { background: #e07030; border: none; color: #fff; font-weight: bold; }
+  .test-feedback { font-size: 18px; margin-top: 10px; min-height: 30px; text-align: center; }
+  .test-feedback.correct-fb { color: #2d7a2d; }
+  .test-feedback.wrong-fb { color: #c33; }
+
+  /* Fretboard diagram in test */
+  .test-diagram { margin: 10px 0 20px; }
+
+  /* Print styles */
+  .print-btn { padding: 10px 20px; background: #0f3460; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin: 10px 0; }
+  .print-btn:hover { background: #e94560; }
+
+  @media print {
+    .nav, .fc-controls, .fc-nav, .fc-progress, .no-print { display: none !important; }
+    body { background: #fff; color: #000; }
+    .tab { display: block !important; max-width: 100%; }
+    .flashcard { width: 100%; height: auto; transform: none !important; }
+    .flashcard .front, .flashcard .back { position: relative; backface-visibility: visible; transform: none; background: #fff; border: 2px solid #000; color: #000; page-break-inside: avoid; margin-bottom: 10px; }
+    .flashcard .front { border-color: #333; }
+    .flashcard .back { border-color: #666; }
+    .flashcard .main-text { color: #000; }
+    .flashcard .label, .flashcard .sub-text { color: #555; }
+    .print-cards { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .print-card { border: 2px solid #000; border-radius: 8px; padding: 15px; page-break-inside: avoid; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .print-card .label { font-size: 10px; color: #666; text-transform: uppercase; }
+    .print-card .main { font-size: 20px; font-weight: bold; }
+    .print-card .sub { font-size: 12px; color: #444; margin-top: 5px; }
+    .diagram-card { background: #fff; border-color: #000; }
+    .diagram-card h4 { color: #000; }
+  }
+  .print-cards { display: none; }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <button class="active" onclick="showTab('flashcards')">Flashcards</button>
+  <button onclick="showTab('diagrams')">Fretboard Diagrams</button>
+  <button onclick="showTab('test')">Test Dashboard</button>
+  <button onclick="showTab('print')">Print Cards</button>
+</div>
+
+<div id="flashcards" class="tab active">
+  <h1>Guitar Triad Flashcards</h1>
+  <div class="fc-controls no-print">
+    <label>Mode:</label>
+    <select id="fcMode">
+      <option value="name2notes">Chord Name → Notes</option>
+      <option value="notes2name">Notes → Chord Name</option>
+      <option value="diagram2name">Diagram → Chord & Notes</option>
+    </select>
+    <label>Quality:</label>
+    <select id="fcQuality">
+      <option value="all">Major & Minor</option>
+      <option value="major">Major Only</option>
+      <option value="minor">Minor Only</option>
+    </select>
+    <button onclick="shuffleCards()">Shuffle</button>
+    <button onclick="resetCards()">Reset</button>
+  </div>
+  <div class="fc-progress no-print" id="fcProgress">Card 1 of 24</div>
+  <div class="flashcard-container">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="front" id="fcFront"></div>
+      <div class="back" id="fcBack"></div>
+    </div>
+  </div>
+  <div class="fc-nav no-print">
+    <button onclick="prevCard()">← Previous</button>
+    <button onclick="flipCard()">Flip</button>
+    <button onclick="nextCard()">Next →</button>
+  </div>
+</div>
+
+<div id="diagrams" class="tab">
+  <h1>Triad Fretboard Diagrams</h1>
+  <div class="diagram-filters no-print">
+    <select id="diagChord" onchange="renderDiagrams()">
+      <option value="all">All Chords</option>
+    </select>
+    <select id="diagQuality" onchange="renderDiagrams()">
+      <option value="all">Major & Minor</option>
+      <option value="major">Major Only</option>
+      <option value="minor">Minor Only</option>
+    </select>
+  </div>
+  <div class="string-set-tabs no-print" id="stringSetTabs">
+    <button class="active" onclick="selectStringSet(1, this)">G-B-E (strings 3-2-1)</button>
+    <button onclick="selectStringSet(0, this)">D-G-B (strings 4-3-2)</button>
+    <button onclick="selectStringSet(2, this)">A-D-G (strings 5-4-3)</button>
+  </div>
+  <div class="diagram-grid" id="diagramGrid"></div>
+</div>
+
+<div id="test" class="tab">
+  <h1>Triad Knowledge Test</h1>
+  <div class="test-config no-print">
+    <select id="testType">
+      <option value="name2notes">Chord Name → Notes</option>
+      <option value="notes2name">Notes → Chord Name</option>
+      <option value="diagram2name">Diagram → Chord Name</option>
+      <option value="mixed">Mixed (All Types)</option>
+    </select>
+    <select id="testQuality">
+      <option value="all">Major & Minor</option>
+      <option value="major">Major Only</option>
+      <option value="minor">Minor Only</option>
+    </select>
+    <button onclick="startTest()">Start Test</button>
+    <button onclick="startTest()" style="background:#0f3460">New Test</button>
+  </div>
+  <div class="test-header">
+    <div class="test-stats">
+      <div class="stat-box"><div class="num" id="testScore">0</div><div class="lbl">Correct</div></div>
+      <div class="stat-box"><div class="num" id="testTotal">0</div><div class="lbl">Answered</div></div>
+      <div class="stat-box"><div class="num" id="testPct">0%</div><div class="lbl">Accuracy</div></div>
+      <div class="stat-box"><div class="num" id="testStreak">0</div><div class="lbl">Streak</div></div>
+    </div>
+  </div>
+  <div class="test-area">
+    <div class="test-question" id="testQuestion">Press "Start Test" to begin</div>
+    <div class="test-diagram" id="testDiagram"></div>
+    <div class="test-options" id="testOptions"></div>
+    <div class="test-feedback" id="testFeedback"></div>
+    <button class="test-next" id="testNext" onclick="nextQuestion()">Next Question →</button>
+  </div>
+</div>
+
+<div id="print" class="tab">
+  <h1>Printable Flashcards</h1>
+  <p style="color:#aaa; margin-bottom:10px;">Print this page (Ctrl+P) to get fold-in-half flashcards. Front on left, back on right.</p>
+  <div class="fc-controls no-print">
+    <select id="printQuality">
+      <option value="all">Major & Minor</option>
+      <option value="major">Major Only</option>
+      <option value="minor">Minor Only</option>
+    </select>
+    <button class="print-btn" onclick="window.print()">Print Cards</button>
+  </div>
+  <div id="printArea"></div>
+</div>
+
+<script>
+// ===== MUSIC THEORY DATA =====
+const NOTES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const NOTE_NAMES = {'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb'};
+const ENHARMONIC = n => NOTE_NAMES[n] ? `${n}/${NOTE_NAMES[n]}` : n;
+
+// String tunings (standard) - fret 0 note index in NOTES
+const STRINGS = {
+  'E2': 4, 'A': 9, 'D': 2, 'G': 7, 'B': 11, 'E4': 4
+};
+const STRING_SETS = [
+  { name: 'D-G-B', label: 'Strings 4-3-2', roots: [2, 7, 11] },
+  { name: 'G-B-E', label: 'Strings 3-2-1', roots: [7, 11, 4] },
+  { name: 'A-D-G', label: 'Strings 5-4-3', roots: [9, 2, 7] },
+];
+
+function noteAt(stringRoot, fret) {
+  return (stringRoot + fret) % 12;
+}
+
+function noteName(idx) { return NOTES[idx % 12]; }
+
+function buildTriad(rootNote, quality) {
+  const rootIdx = NOTES.indexOf(rootNote);
+  if (quality === 'major') return [rootIdx, (rootIdx+4)%12, (rootIdx+7)%12];
+  return [rootIdx, (rootIdx+3)%12, (rootIdx+7)%12]; // minor
+}
+
+function triadNotes(rootNote, quality) {
+  const t = buildTriad(rootNote, quality);
+  return t.map(n => noteName(n));
+}
+
+function chordLabel(root, quality) {
+  const q = quality === 'major' ? '' : 'm';
+  return ENHARMONIC(root) + q;
+}
+
+// Find all triad voicings on a string set
+function findVoicings(rootNote, quality, stringSet) {
+  const triad = buildTriad(rootNote, quality);
+  const [r, third, fifth] = triad;
+  const inversions = [
+    { name: 'Root Position', notes: [r, third, fifth], abbr: 'R-3-5' },
+    { name: '1st Inversion', notes: [third, fifth, r], abbr: '3-5-R' },
+    { name: '2nd Inversion', notes: [fifth, r, third], abbr: '5-R-3' },
+  ];
+
+  const voicings = [];
+  for (const inv of inversions) {
+    // Find fret for each note on each string
+    for (let baseFret = 0; baseFret <= 12; baseFret++) {
+      const frets = [];
+      let valid = true;
+      for (let s = 0; s < 3; s++) {
+        const targetNote = inv.notes[s];
+        const stringRoot = stringSet.roots[s];
+        const fret = (targetNote - stringRoot + 12) % 12;
+        // Adjust to be near baseFret
+        let actualFret = fret;
+        while (actualFret < baseFret - 3) actualFret += 12;
+        while (actualFret > baseFret + 5) actualFret -= 12;
+        if (actualFret < 0 || actualFret > 15) { valid = false; break; }
+        frets.push(actualFret);
+      }
+      if (!valid) continue;
+      // Check spread isn't too wide (max 4 fret span)
+      const minF = Math.min(...frets);
+      const maxF = Math.max(...frets);
+      if (maxF - minF > 4) continue;
+      if (maxF > 12) continue;
+      // Deduplicate
+      const key = frets.join('-');
+      if (!voicings.some(v => v.frets.join('-') === key && v.inversion === inv.name)) {
+        voicings.push({
+          frets,
+          notes: inv.notes.map(n => noteName(n)),
+          inversion: inv.name,
+          abbr: inv.abbr,
+          minFret: minF,
+          maxFret: maxF
+        });
+      }
+    }
+  }
+  return voicings;
+}
+
+// Build all chords data
+const ALL_CHORDS = [];
+for (const root of NOTES) {
+  for (const q of ['major','minor']) {
+    const notes = triadNotes(root, q);
+    const label = chordLabel(root, q);
+    const voicings = [];
+    for (let si = 0; si < STRING_SETS.length; si++) {
+      const vs = findVoicings(root, q, STRING_SETS[si]);
+      vs.forEach(v => voicings.push({ ...v, stringSet: si, stringSetName: STRING_SETS[si].name }));
+    }
+    ALL_CHORDS.push({ root, quality: q, label, notes, voicings });
+  }
+}
+
+// ===== SMALL FRETBOARD DRAWING (for flashcards & test) =====
+function drawFretboard(canvas, voicing, stringSet, highlight) {
+  const ctx = canvas.getContext('2d');
+  const w = 240, h = 140;
+  canvas.width = w; canvas.height = h;
+
+  const frets = voicing.frets;
+  const minFret = Math.max(0, voicing.minFret - 1);
+  const numFrets = 5;
+  const startFret = minFret;
+
+  const margin = { left: 35, top: 25, right: 20, bottom: 20 };
+  const fretW = (w - margin.left - margin.right) / numFrets;
+  const stringH = (h - margin.top - margin.bottom) / 2;
+
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1;
+  for (let f = 0; f <= numFrets; f++) {
+    const x = margin.left + f * fretW;
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, h - margin.bottom);
+    ctx.stroke();
+    if (f < numFrets) {
+      ctx.fillStyle = '#666';
+      ctx.font = '10px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(String(startFret + f + 1), margin.left + f * fretW + fretW/2, margin.top - 8);
+    }
+  }
+
+  if (startFret === 0) {
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left, h - margin.bottom);
+    ctx.stroke();
+  }
+
+  const stringNames = stringSet.name.split('-');
+  ctx.strokeStyle = '#888';
+  ctx.lineWidth = 1;
+  for (let s = 0; s < 3; s++) {
+    const y = margin.top + s * stringH;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(w - margin.right, y);
+    ctx.stroke();
+    ctx.fillStyle = '#888';
+    ctx.font = '11px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(stringNames[s], margin.left - 6, y + 4);
+  }
+
+  const colors = { 'R': '#e94560', '3': '#53d769', '5': '#4da6ff' };
+  const intervals = voicing.abbr.split('-');
+
+  for (let s = 0; s < 3; s++) {
+    const fret = frets[s];
+    const y = margin.top + s * stringH;
+    let x;
+    if (fret === 0) {
+      x = margin.left - 2;
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, Math.PI * 2);
+      ctx.strokeStyle = colors[intervals[s]] || '#fff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fill();
+    } else {
+      x = margin.left + (fret - startFret - 0.5) * fretW;
+      ctx.beginPath();
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+      ctx.fillStyle = colors[intervals[s]] || '#fff';
+      ctx.fill();
+    }
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(voicing.notes[s], x, y + 4);
+  }
+
+  ctx.font = '9px Arial';
+  ctx.textAlign = 'left';
+  const legendY = h - 5;
+  ctx.fillStyle = '#e94560'; ctx.fillText('● R', margin.left, legendY);
+  ctx.fillStyle = '#53d769'; ctx.fillText('● 3', margin.left + 30, legendY);
+  ctx.fillStyle = '#4da6ff'; ctx.fillText('● 5', margin.left + 60, legendY);
+}
+
+// ===== WIDE FRETBOARD DRAWING (for diagrams tab) =====
+function findAllVoicingsFullNeck(rootNote, quality, stringSet) {
+  const triad = buildTriad(rootNote, quality);
+  const [r, third, fifth] = triad;
+  const inversions = [
+    { name: 'Root Position', intervals: [r, third, fifth], abbr: 'R-3-5', roles: ['R','3','5'] },
+    { name: '1st Inversion', intervals: [third, fifth, r], abbr: '3-5-R', roles: ['3','5','R'] },
+    { name: '2nd Inversion', intervals: [fifth, r, third], abbr: '5-R-3', roles: ['5','R','3'] },
+  ];
+  const voicings = [];
+  for (const inv of inversions) {
+    // For each string, find all frets where the target note lives (0-15)
+    const possibleFrets = [];
+    for (let s = 0; s < 3; s++) {
+      const targetNote = inv.intervals[s];
+      const stringRoot = stringSet.roots[s];
+      const fretsForString = [];
+      for (let f = 0; f <= 15; f++) {
+        if ((stringRoot + f) % 12 === targetNote) {
+          fretsForString.push(f);
+        }
+      }
+      possibleFrets.push(fretsForString);
+    }
+    // Combine: pick one fret per string where spread <= 4
+    for (const f0 of possibleFrets[0]) {
+      for (const f1 of possibleFrets[1]) {
+        for (const f2 of possibleFrets[2]) {
+          const minF = Math.min(f0, f1, f2);
+          const maxF = Math.max(f0, f1, f2);
+          if (maxF - minF <= 4) {
+            const frets = [f0, f1, f2];
+            const key = frets.join('-');
+            if (!voicings.some(v => v.frets.join('-') === key)) {
+              voicings.push({
+                frets,
+                notes: inv.intervals.map(n => noteName(n)),
+                roles: inv.roles,
+                inversion: inv.name,
+                abbr: inv.abbr,
+                minFret: minF,
+                maxFret: maxF
+              });
+            }
+          }
+        }
+      }
+    }
+  }
+  return voicings;
+}
+
+function drawWideFretboard(canvas, chordLabel, rootNote, quality, stringSet) {
+  const ctx = canvas.getContext('2d');
+  const totalFrets = 15;
+  const numStrings = 4; // Show 4 strings: the 3 triad strings + 1 adjacent
+  const w = 960, h = 190;
+  canvas.width = w;
+  canvas.height = h;
+
+  // Determine the 4 strings to display (triad strings + adjacent higher string)
+  // String set roots are low-to-high; we add the next higher string
+  const ALL_STRINGS = [
+    { name: 'E', root: 4, gauge: 0.5 },  // high E (1st)
+    { name: 'B', root: 11, gauge: 0.8 }, // B (2nd)
+    { name: 'G', root: 7, gauge: 1.1 },  // G (3rd)
+    { name: 'D', root: 2, gauge: 1.4 },  // D (4th)
+    { name: 'A', root: 9, gauge: 1.7 },  // A (5th)
+    { name: 'E', root: 4, gauge: 2.0 },  // low E (6th)
+  ];
+
+  // Map string set to which 4 strings to show (indices into ALL_STRINGS, high to low)
+  const stringSetMap = {
+    'D-G-B': [0, 1, 2, 3],  // E B G D — show high E as bonus
+    'G-B-E': [0, 1, 2, 3],  // E B G D — show D as bonus
+    'A-D-G': [1, 2, 3, 4],  // B G D A — show B as bonus
+  };
+
+  const displayStrings = stringSetMap[stringSet.name] || [0, 1, 2, 3];
+  const triadStringIndices = {
+    'D-G-B': [3, 2, 1], // D=index 3, G=index 2, B=index 1 in display
+    'G-B-E': [2, 1, 0], // G=index 2, B=index 1, E=index 0 in display
+    'A-D-G': [3, 2, 1], // A=index 3, D=index 2, G=index 1 in display
+  };
+
+  const displayInfo = displayStrings.map(i => ALL_STRINGS[i]);
+  const triadDrawIdx = triadStringIndices[stringSet.name]; // which display rows are the triad strings
+
+  const margin = { left: 40, top: 30, right: 30, bottom: 35 };
+  const neckW = w - margin.left - margin.right;
+  const neckH = h - margin.top - margin.bottom;
+  const fretSpacing = neckW / totalFrets;
+  const stringSpacing = neckH / (numStrings - 1);
+  const fretMarkers = [3, 5, 7, 9, 12];
+
+  // Background
+  ctx.fillStyle = '#f5f5f0';
+  ctx.fillRect(0, 0, w, h);
+
+  // Fretboard background
+  ctx.fillStyle = '#e8e4da';
+  ctx.fillRect(margin.left, margin.top, neckW, neckH);
+
+  // Fret marker dots
+  ctx.fillStyle = '#ccc8be';
+  for (const fm of fretMarkers) {
+    if (fm <= totalFrets) {
+      const x = margin.left + (fm - 0.5) * fretSpacing;
+      if (fm === 12) {
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH * 0.3, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH * 0.7, 5, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH / 2, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Fret lines (vertical)
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 1;
+  for (let f = 1; f <= totalFrets; f++) {
+    const x = margin.left + f * fretSpacing;
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + neckH);
+    ctx.stroke();
+  }
+
+  // Nut (thick left edge)
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + neckH);
+  ctx.stroke();
+
+  // Strings (horizontal) — top string = highest pitch (high E or B)
+  for (let s = 0; s < numStrings; s++) {
+    const y = margin.top + s * stringSpacing;
+    const info = displayInfo[s];
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = info.gauge;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + neckW, y);
+    ctx.stroke();
+
+    // String name on left
+    ctx.fillStyle = triadDrawIdx.includes(s) ? '#444' : '#aaa';
+    ctx.font = triadDrawIdx.includes(s) ? 'bold 12px Arial' : '12px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(info.name, margin.left - 8, y + 4);
+  }
+
+  // Fret numbers below
+  ctx.fillStyle = '#888';
+  ctx.font = '11px Arial';
+  ctx.textAlign = 'center';
+  for (const f of [3, 5, 7, 9, 12, 15]) {
+    if (f <= totalFrets) {
+      ctx.fillText(String(f), margin.left + (f - 0.5) * fretSpacing, margin.top + neckH + 18);
+    }
+  }
+
+  // Find triad voicings
+  const voicings = findAllVoicingsFullNeck(rootNote, quality, stringSet);
+
+  // Also find what triad note falls on the bonus string for each voicing
+  const triad = buildTriad(rootNote, quality);
+  const bonusStringIdx = displayStrings.filter(i => !triadDrawIdx.map(ti => displayStrings[ti]).includes(i));
+  const bonusDisplayRow = [0, 1, 2, 3].find(i => !triadDrawIdx.includes(i));
+  const bonusStringRoot = displayInfo[bonusDisplayRow].root;
+
+  const noteRadius = 11;
+
+  function fretX(fret) {
+    if (fret === 0) return margin.left - 4;
+    return margin.left + (fret - 0.5) * fretSpacing;
+  }
+  function stringY(displayRow) {
+    return margin.top + displayRow * stringSpacing;
+  }
+
+  // For each voicing, find the bonus string note
+  const voicingsWithBonus = voicings.map(v => {
+    // Find which triad note is closest to the voicing on the bonus string
+    const bonusFrets = [];
+    for (const noteIdx of triad) {
+      for (let f = 0; f <= 15; f++) {
+        if ((bonusStringRoot + f) % 12 === noteIdx) {
+          // Check if this fret is within reach of the voicing (spread <= 4 from any triad fret)
+          const allFrets = [...v.frets, f];
+          const minF = Math.min(...allFrets);
+          const maxF = Math.max(...allFrets);
+          if (maxF - minF <= 4) {
+            bonusFrets.push({ fret: f, note: noteName(noteIdx), isRoot: noteIdx === triad[0] });
+          }
+        }
+      }
+    }
+    return { ...v, bonusFrets };
+  });
+
+  // Draw connecting lines first
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  for (const v of voicingsWithBonus) {
+    ctx.beginPath();
+    ctx.moveTo(fretX(v.frets[0]), stringY(triadDrawIdx[0]));
+    ctx.lineTo(fretX(v.frets[1]), stringY(triadDrawIdx[1]));
+    ctx.lineTo(fretX(v.frets[2]), stringY(triadDrawIdx[2]));
+    ctx.stroke();
+
+    // Connect bonus notes
+    for (const b of v.bonusFrets) {
+      ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      // Connect to nearest triad note
+      const nearestTriadRow = triadDrawIdx[0]; // connect to top triad string
+      ctx.moveTo(fretX(v.frets[triadDrawIdx.indexOf(triadDrawIdx[0])]), stringY(triadDrawIdx[0]));
+      ctx.lineTo(fretX(b.fret), stringY(bonusDisplayRow));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+    }
+  }
+
+  // Draw triad note circles
+  for (const v of voicingsWithBonus) {
+    for (let s = 0; s < 3; s++) {
+      const displayRow = triadDrawIdx[s];
+      const x = fretX(v.frets[s]);
+      const y = stringY(displayRow);
+      const role = v.roles[s];
+      const isRoot = (role === 'R');
+
+      ctx.beginPath();
+      ctx.arc(x, y, noteRadius, 0, Math.PI * 2);
+      ctx.fillStyle = isRoot ? '#e07030' : (role === '5' ? '#3a7ebf' : '#222');
+      ctx.fill();
+      ctx.strokeStyle = isRoot ? '#ff9050' : (role === '5' ? '#5a9ed6' : '#555');
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(v.notes[s], x, y);
+    }
+
+    // Draw bonus string notes (smaller, slightly transparent)
+    for (const b of v.bonusFrets) {
+      const x = fretX(b.fret);
+      const y = stringY(bonusDisplayRow);
+      const bNoteIdx = NOTES.indexOf(b.note);
+      const isFifth = bNoteIdx === triad[2];
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fillStyle = b.isRoot ? '#e07030' : (isFifth ? '#3a7ebf' : '#222');
+      ctx.fill();
+      ctx.strokeStyle = b.isRoot ? '#ff9050' : (isFifth ? '#5a9ed6' : '#555');
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(b.note, x, y);
+      ctx.globalAlpha = 1.0;
+    }
+  }
+  ctx.textBaseline = 'alphabetic';
+}
+
+// ===== FLASHCARDS =====
+let fcCards = [];
+let fcIdx = 0;
+
+function buildFCCards() {
+  const mode = document.getElementById('fcMode').value;
+  const quality = document.getElementById('fcQuality').value;
+
+  let chords = ALL_CHORDS;
+  if (quality === 'major') chords = chords.filter(c => c.quality === 'major');
+  if (quality === 'minor') chords = chords.filter(c => c.quality === 'minor');
+
+  fcCards = [];
+  for (const chord of chords) {
+    if (mode === 'name2notes') {
+      fcCards.push({
+        frontLabel: 'What are the notes in:',
+        frontMain: chord.label,
+        frontSub: chord.quality === 'major' ? 'Major Triad' : 'Minor Triad',
+        backLabel: 'Answer:',
+        backMain: chord.notes.map(ENHARMONIC).join('  -  '),
+        backSub: `R: ${ENHARMONIC(chord.notes[0])}  |  3: ${ENHARMONIC(chord.notes[1])}  |  5: ${ENHARMONIC(chord.notes[2])}`
+      });
+    } else if (mode === 'notes2name') {
+      fcCards.push({
+        frontLabel: 'Name this chord:',
+        frontMain: chord.notes.map(ENHARMONIC).join('  -  '),
+        frontSub: 'Root - Third - Fifth',
+        backLabel: 'Answer:',
+        backMain: chord.label,
+        backSub: chord.quality === 'major' ? 'Major Triad' : 'Minor Triad'
+      });
+    } else {
+      // diagram mode - pick a random voicing
+      const v = chord.voicings[Math.floor(Math.random() * chord.voicings.length)];
+      if (v) {
+        fcCards.push({
+          frontLabel: `Identify this triad (${STRING_SETS[v.stringSet].name}):`,
+          frontMain: `Frets: ${v.frets.join(' - ')}`,
+          frontSub: `${v.inversion} (${v.abbr})`,
+          backLabel: 'Answer:',
+          backMain: chord.label,
+          backSub: `Notes: ${v.notes.map(ENHARMONIC).join(' - ')}`,
+          voicing: v,
+          stringSet: v.stringSet
+        });
+      }
+    }
+  }
+  fcIdx = 0;
+  renderFC();
+}
+
+function renderFC() {
+  if (fcCards.length === 0) { buildFCCards(); return; }
+  const card = fcCards[fcIdx];
+  const front = document.getElementById('fcFront');
+  const back = document.getElementById('fcBack');
+
+  front.innerHTML = `<div class="label">${card.frontLabel}</div><div class="main-text">${card.frontMain}</div><div class="sub-text">${card.frontSub}</div>`;
+  back.innerHTML = `<div class="label">${card.backLabel}</div><div class="main-text">${card.backMain}</div><div class="sub-text">${card.backSub}</div>`;
+
+  if (card.voicing) {
+    const canvas = document.createElement('canvas');
+    front.appendChild(canvas);
+    drawFretboard(canvas, card.voicing, STRING_SETS[card.stringSet]);
+  }
+
+  document.getElementById('flashcard').classList.remove('flipped');
+  document.getElementById('fcProgress').textContent = `Card ${fcIdx + 1} of ${fcCards.length}`;
+}
+
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard() { fcIdx = (fcIdx + 1) % fcCards.length; renderFC(); }
+function prevCard() { fcIdx = (fcIdx - 1 + fcCards.length) % fcCards.length; renderFC(); }
+function shuffleCards() { fcCards.sort(() => Math.random() - 0.5); fcIdx = 0; renderFC(); }
+function resetCards() { buildFCCards(); }
+
+// ===== DIAGRAMS =====
+let currentStringSet = 1; // Default to G-B-E (strings 3-2-1)
+
+function selectStringSet(idx, btn) {
+  currentStringSet = idx;
+  document.querySelectorAll('.string-set-tabs button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderDiagrams();
+}
+
+function renderDiagrams() {
+  const chordFilter = document.getElementById('diagChord').value;
+  const qualFilter = document.getElementById('diagQuality').value;
+  const grid = document.getElementById('diagramGrid');
+  grid.innerHTML = '';
+
+  let chords = ALL_CHORDS;
+  if (chordFilter !== 'all') chords = chords.filter(c => c.root === chordFilter);
+  if (qualFilter === 'major') chords = chords.filter(c => c.quality === 'major');
+  if (qualFilter === 'minor') chords = chords.filter(c => c.quality === 'minor');
+
+  const ss = STRING_SETS[currentStringSet];
+
+  for (const chord of chords) {
+    const card = document.createElement('div');
+    card.className = 'diagram-card';
+    card.innerHTML = `<h4>${chord.label} — ${ss.name} (${ss.label})</h4>
+      <div class="inv-label">All inversions across the full neck</div>`;
+    const canvas = document.createElement('canvas');
+    const legend = document.createElement('div');
+    legend.className = 'diagram-legend';
+    legend.innerHTML = `
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e07030;"></span> Root</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#222;border:1px solid #555;"></span> 3rd</span>
+      <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#3a7ebf;border:1px solid #5a9ed6;"></span> 5th</span>
+      <span style="color:#888;">Lines connect notes in same voicing</span>`;
+    card.appendChild(canvas);
+    card.appendChild(legend);
+    grid.appendChild(card);
+    drawWideFretboard(canvas, chord.label, chord.root, chord.quality, ss);
+  }
+}
+
+// ===== TEST DASHBOARD =====
+let testState = { score: 0, total: 0, streak: 0, questions: [], qIdx: 0 };
+
+function generateQuestion(type, chords) {
+  const chord = chords[Math.floor(Math.random() * chords.length)];
+
+  if (type === 'name2notes') {
+    const correct = chord.notes.map(ENHARMONIC).join(' - ');
+    const rootDisplay = ENHARMONIC(chord.notes[0]);
+    const options = [correct];
+    // Generate wrong answers that share the same root note but wrong 3rd/5th
+    const allIntervals = [1,2,3,4,5,6,7,8,9,10,11];
+    const rootIdx = NOTES.indexOf(chord.root);
+    const shuffledIntervals = allIntervals.sort(() => Math.random() - 0.5);
+    let attempts = 0;
+    while (options.length < 4 && attempts < 30) {
+      attempts++;
+      // Pick two random intervals for fake 3rd and 5th
+      const fake3 = ENHARMONIC(noteName((rootIdx + shuffledIntervals[attempts % 11]) % 12));
+      const fake5 = ENHARMONIC(noteName((rootIdx + shuffledIntervals[(attempts + 3) % 11]) % 12));
+      const opt = `${rootDisplay} - ${fake3} - ${fake5}`;
+      if (!options.includes(opt) && opt !== correct) options.push(opt);
+    }
+    // Fallback if we somehow didn't get 4
+    while (options.length < 4) {
+      const rnd = chords[Math.floor(Math.random() * chords.length)];
+      const opt = rnd.notes.map(ENHARMONIC).join(' - ');
+      if (!options.includes(opt)) options.push(opt);
+    }
+    return { question: `What are the notes in <span class="highlight">${chord.label}</span>?`, correct, options: options.sort(() => Math.random()-0.5), type };
+  }
+
+  if (type === 'notes2name') {
+    const correct = chord.label;
+    const options = [correct];
+    while (options.length < 4) {
+      const rnd = chords[Math.floor(Math.random() * chords.length)];
+      if (!options.includes(rnd.label)) options.push(rnd.label);
+    }
+    return { question: `Name the chord: <span class="highlight">${chord.notes.map(ENHARMONIC).join(' - ')}</span>`, correct, options: options.sort(() => Math.random()-0.5), type };
+  }
+
+  if (type === 'diagram2name') {
+    if (chord.voicings.length === 0) return generateQuestion('name2notes', chords);
+    const v = chord.voicings[Math.floor(Math.random() * chord.voicings.length)];
+    const correct = chord.label;
+    const options = [correct];
+    while (options.length < 4) {
+      const rnd = chords[Math.floor(Math.random() * chords.length)];
+      if (!options.includes(rnd.label)) options.push(rnd.label);
+    }
+    return { question: `Identify this triad on ${STRING_SETS[v.stringSet].name}:`, correct, options: options.sort(() => Math.random()-0.5), type, voicing: v, stringSet: v.stringSet };
+  }
+}
+
+function startTest() {
+  const type = document.getElementById('testType').value;
+  const qual = document.getElementById('testQuality').value;
+
+  let chords = ALL_CHORDS;
+  if (qual === 'major') chords = chords.filter(c => c.quality === 'major');
+  if (qual === 'minor') chords = chords.filter(c => c.quality === 'minor');
+
+  testState = { score: 0, total: 0, streak: 0, questions: [], qIdx: 0 };
+
+  const types = type === 'mixed' ? ['name2notes','notes2name','diagram2name'] : [type];
+  for (let i = 0; i < 20; i++) {
+    const t = types[Math.floor(Math.random() * types.length)];
+    testState.questions.push(generateQuestion(t, chords));
+  }
+
+  updateTestStats();
+  showQuestion();
+}
+
+function showQuestion() {
+  if (testState.qIdx >= testState.questions.length) {
+    document.getElementById('testQuestion').innerHTML = `Test Complete! Score: ${testState.score}/${testState.total} (${Math.round(testState.score/testState.total*100)}%)`;
+    document.getElementById('testOptions').innerHTML = '';
+    document.getElementById('testDiagram').innerHTML = '';
+    document.getElementById('testFeedback').textContent = '';
+    document.getElementById('testNext').style.display = 'none';
+    return;
+  }
+
+  const q = testState.questions[testState.qIdx];
+  document.getElementById('testQuestion').innerHTML = q.question;
+  document.getElementById('testFeedback').textContent = '';
+  document.getElementById('testFeedback').className = 'test-feedback';
+  document.getElementById('testNext').style.display = 'none';
+
+  // Diagram if applicable
+  const diagDiv = document.getElementById('testDiagram');
+  diagDiv.innerHTML = '';
+  if (q.voicing) {
+    const canvas = document.createElement('canvas');
+    diagDiv.appendChild(canvas);
+    drawFretboard(canvas, q.voicing, STRING_SETS[q.stringSet]);
+    // Show inversion info
+    const info = document.createElement('div');
+    info.style.cssText = 'text-align:center;color:#aaa;font-size:13px;margin-top:4px;';
+    info.textContent = `${q.voicing.inversion} (${q.voicing.abbr}) | Frets: ${q.voicing.frets.join('-')}`;
+    diagDiv.appendChild(info);
+  }
+
+  const optDiv = document.getElementById('testOptions');
+  optDiv.innerHTML = '';
+  for (const opt of q.options) {
+    const btn = document.createElement('button');
+    btn.textContent = opt;
+    btn.onclick = () => answerQuestion(opt, q.correct);
+    optDiv.appendChild(btn);
+  }
+}
+
+function answerQuestion(selected, correct) {
+  const btns = document.querySelectorAll('#testOptions button');
+  btns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+    if (b.textContent === selected && selected !== correct) b.classList.add('wrong');
+  });
+
+  testState.total++;
+  const fb = document.getElementById('testFeedback');
+  if (selected === correct) {
+    testState.score++;
+    testState.streak++;
+    fb.textContent = 'Correct!';
+    fb.className = 'test-feedback correct-fb';
+  } else {
+    testState.streak = 0;
+    fb.textContent = `Incorrect — the answer is ${correct}`;
+    fb.className = 'test-feedback wrong-fb';
+  }
+
+  updateTestStats();
+  document.getElementById('testNext').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  testState.qIdx++;
+  showQuestion();
+}
+
+function updateTestStats() {
+  document.getElementById('testScore').textContent = testState.score;
+  document.getElementById('testTotal').textContent = testState.total;
+  document.getElementById('testPct').textContent = testState.total ? Math.round(testState.score/testState.total*100) + '%' : '0%';
+  document.getElementById('testStreak').textContent = testState.streak;
+}
+
+// ===== PRINT CARDS =====
+function renderPrintCards() {
+  const qual = document.getElementById('printQuality')?.value || 'all';
+  let chords = ALL_CHORDS;
+  if (qual === 'major') chords = chords.filter(c => c.quality === 'major');
+  if (qual === 'minor') chords = chords.filter(c => c.quality === 'minor');
+
+  const area = document.getElementById('printArea');
+  let html = '<div class="print-cards" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">';
+
+  for (const chord of chords) {
+    html += `
+      <div class="print-card" style="border:2px solid #ddd; border-radius:8px; padding:15px; text-align:center; background:#fff;">
+        <div class="label" style="color:#888; font-size:11px; text-transform:uppercase; letter-spacing:1px;">What are the notes in:</div>
+        <div class="main" style="font-size:24px; font-weight:bold; color:#e07030; margin:8px 0;">${chord.label}</div>
+        <div class="sub" style="color:#888; font-size:12px;">${chord.quality === 'major' ? 'Major Triad' : 'Minor Triad'}</div>
+      </div>
+      <div class="print-card" style="border:2px solid #ddd; border-radius:8px; padding:15px; text-align:center; background:#fafaf5;">
+        <div class="label" style="color:#888; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Answer:</div>
+        <div class="main" style="font-size:20px; font-weight:bold; color:#2d7a2d; margin:8px 0;">${chord.notes.map(ENHARMONIC).join('  —  ')}</div>
+        <div class="sub" style="color:#666; font-size:12px;">R: ${ENHARMONIC(chord.notes[0])} | 3rd: ${ENHARMONIC(chord.notes[1])} | 5th: ${ENHARMONIC(chord.notes[2])}</div>
+      </div>`;
+  }
+  html += '</div>';
+  area.innerHTML = html;
+}
+
+// ===== TAB NAVIGATION =====
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+
+  if (id === 'diagrams') renderDiagrams();
+  if (id === 'print') renderPrintCards();
+  if (id === 'flashcards' && fcCards.length === 0) buildFCCards();
+}
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', () => {
+  // Populate chord filter dropdown
+  const sel = document.getElementById('diagChord');
+  for (const n of NOTES) {
+    const opt = document.createElement('option');
+    opt.value = n; opt.textContent = ENHARMONIC(n);
+    sel.appendChild(opt);
+  }
+
+  // Attach change handlers for flashcard controls
+  document.getElementById('fcMode').addEventListener('change', buildFCCards);
+  document.getElementById('fcQuality').addEventListener('change', buildFCCards);
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') nextCard();
+    if (e.key === 'ArrowLeft') prevCard();
+    if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  });
+
+  buildFCCards();
+});
+</script>
+</body>
+</html>
