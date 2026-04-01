@@ -69,36 +69,21 @@
   .string-set-tabs button:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid #ccc; }
   .string-set-tabs button.active { background: #e07030; color: #fff; border-color: #e07030; }
 
-  /* Test Dashboard */
-  .test-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0; flex-wrap: wrap; gap: 10px; }
-  .test-stats { display: flex; gap: 20px; }
-  .stat-box { background: #fff; padding: 12px 20px; border-radius: 10px; text-align: center; min-width: 100px; border: 1px solid #ddd; }
-  .stat-box .num { font-size: 28px; font-weight: bold; color: #e07030; }
-  .stat-box .lbl { font-size: 12px; color: #888; text-transform: uppercase; }
-  .test-area { display: flex; flex-direction: column; align-items: center; min-height: 400px; }
-  .test-question { font-size: 24px; margin: 30px 0 20px; text-align: center; color: #333; }
-  .test-question .highlight { color: #e07030; font-weight: bold; font-size: 30px; }
-  .test-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 600px; }
-  .test-options button { padding: 16px; border-radius: 10px; border: 2px solid #ddd; background: #fff; color: #333; font-size: 18px; cursor: pointer; transition: all 0.2s; }
-  .test-options button:hover { border-color: #e07030; background: #fdf5f0; }
-  .test-options button.correct { border-color: #53a653; background: #f0f8f0; color: #2d7a2d; }
-  .test-options button.wrong { border-color: #d44; background: #fdf0f0; color: #c33; }
-  .test-options button:disabled { cursor: default; opacity: 0.7; }
-  .test-next { margin-top: 20px; padding: 12px 40px; border-radius: 8px; border: none; background: #e07030; color: #fff; font-size: 16px; cursor: pointer; display: none; }
-  .test-next:hover { background: #c8612a; }
-  .test-config { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-  .test-config select, .test-config button { padding: 8px 16px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #333; font-size: 14px; cursor: pointer; }
-  .test-config button { background: #e07030; border: none; color: #fff; font-weight: bold; }
-  .test-feedback { font-size: 18px; margin-top: 10px; min-height: 30px; text-align: center; }
-  .test-feedback.correct-fb { color: #2d7a2d; }
-  .test-feedback.wrong-fb { color: #c33; }
-
-  /* Fretboard diagram in test */
-  .test-diagram { margin: 10px 0 20px; }
-
-  /* Print styles */
-  .print-btn { padding: 10px 20px; background: #0f3460; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin: 10px 0; }
-  .print-btn:hover { background: #e94560; }
+  /* Scales Tab */
+  .scale-type-tabs { display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 15px; }
+  .scale-type-tabs button { padding: 10px 18px; border: 1px solid #ccc; background: #f0f0eb; color: #666; font-size: 14px; cursor: pointer; transition: all 0.2s; border-right: none; }
+  .scale-type-tabs button:first-child { border-radius: 8px 0 0 8px; }
+  .scale-type-tabs button:last-child { border-radius: 0 8px 8px 0; border-right: 1px solid #ccc; }
+  .scale-type-tabs button.active { background: #e07030; color: #fff; border-color: #e07030; }
+  .scale-legend { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; font-size: 13px; color: #666; }
+  .scale-legend span { display: flex; align-items: center; gap: 5px; }
+  .scale-positions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 30px; }
+  .scale-pos-card { background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+  .scale-pos-card h4 { color: #e07030; margin-bottom: 4px; font-size: 14px; }
+  .scale-pos-card .fret-range { color: #888; font-size: 12px; margin-bottom: 8px; }
+  .scale-full-neck { margin-bottom: 30px; }
+  .scale-full-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+  .scale-full-card h4 { color: #e07030; margin-bottom: 12px; font-size: 16px; }
 
   @media print {
     .nav, .fc-controls, .fc-nav, .fc-progress, .no-print { display: none !important; }
@@ -110,15 +95,9 @@
     .flashcard .back { border-color: #666; }
     .flashcard .main-text { color: #000; }
     .flashcard .label, .flashcard .sub-text { color: #555; }
-    .print-cards { display: grid !important; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .print-card { border: 2px solid #000; border-radius: 8px; padding: 15px; page-break-inside: avoid; min-height: 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .print-card .label { font-size: 10px; color: #666; text-transform: uppercase; }
-    .print-card .main { font-size: 20px; font-weight: bold; }
-    .print-card .sub { font-size: 12px; color: #444; margin-top: 5px; }
     .diagram-card { background: #fff; border-color: #000; }
     .diagram-card h4 { color: #000; }
   }
-  .print-cards { display: none; }
 
   /* Circle of Fifths */
   .cof-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
@@ -162,8 +141,11 @@
   .song-tag.key-tag { background: #f5f0fa; color: #6a4a8a; }
   .song-card .song-note { font-size: 12px; color: #888; margin-top: 2px; }
   .song-card .song-key { font-size: 12px; color: #999; white-space: nowrap; width: 60px; text-align: center; }
+  .song-card .song-buttons { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
   .song-card .song-link { display: inline-block; padding: 6px 14px; background: #e07030; color: #fff; border: none; border-radius: 6px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
   .song-card .song-link:hover { background: #c8612a; }
+  .song-card .song-lesson { display: inline-block; padding: 5px 10px; background: #cc0000; color: #fff; border: none; border-radius: 6px; text-decoration: none; text-align: center; font-weight: bold; font-size: 11px; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
+  .song-card .song-lesson:hover { background: #a00000; }
   .song-card .song-chords { font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; color: #999; margin-top: 3px; }
   .songs-count { color: #888; font-size: 14px; margin-bottom: 8px; }
   .song-tag.strum { background: #e8e0f0; color: #6a4a8a; }
@@ -190,8 +172,7 @@
 <div class="nav">
   <button class="active" onclick="showTab('flashcards')">Flashcards</button>
   <button onclick="showTab('diagrams')">Fretboard Diagrams</button>
-  <button onclick="showTab('test')">Test Dashboard</button>
-  <button onclick="showTab('print')">Print Cards</button>
+  <button onclick="showTab('scales')">Scales</button>
   <button onclick="showTab('circle')">Circle of Fifths</button>
   <button onclick="showTab('songs')">Songs</button>
 </div>
@@ -246,52 +227,25 @@
   <div class="diagram-grid" id="diagramGrid"></div>
 </div>
 
-<div id="test" class="tab">
-  <h1>Triad Knowledge Test</h1>
-  <div class="test-config no-print">
-    <select id="testType">
-      <option value="name2notes">Chord Name → Notes</option>
-      <option value="notes2name">Notes → Chord Name</option>
-      <option value="diagram2name">Diagram → Chord Name</option>
-      <option value="mixed">Mixed (All Types)</option>
-    </select>
-    <select id="testQuality">
-      <option value="all">Major & Minor</option>
-      <option value="major">Major Only</option>
-      <option value="minor">Minor Only</option>
-    </select>
-    <button onclick="startTest()">Start Test</button>
-    <button onclick="startTest()" style="background:#0f3460">New Test</button>
+<div id="scales" class="tab">
+  <h1>Scale Reference</h1>
+  <div class="root-note-bar no-print" id="scaleRootBar"></div>
+  <div class="scale-type-tabs" id="scaleTypeTabs">
+    <button class="active" onclick="selectScaleType('major', this)">Major</button>
+    <button onclick="selectScaleType('natural_minor', this)">Minor (Natural)</button>
+    <button onclick="selectScaleType('major_pent', this)">Major Pentatonic</button>
+    <button onclick="selectScaleType('minor_pent', this)">Minor Pentatonic</button>
+    <button onclick="selectScaleType('blues', this)">Blues Scale</button>
+    <button onclick="selectScaleType('dorian', this)">Dorian Mode</button>
+    <button onclick="selectScaleType('mixolydian', this)">Mixolydian Mode</button>
   </div>
-  <div class="test-header">
-    <div class="test-stats">
-      <div class="stat-box"><div class="num" id="testScore">0</div><div class="lbl">Correct</div></div>
-      <div class="stat-box"><div class="num" id="testTotal">0</div><div class="lbl">Answered</div></div>
-      <div class="stat-box"><div class="num" id="testPct">0%</div><div class="lbl">Accuracy</div></div>
-      <div class="stat-box"><div class="num" id="testStreak">0</div><div class="lbl">Streak</div></div>
-    </div>
+  <div class="scale-legend" id="scaleLegend">
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e07030;"></span> Root</span>
+    <span><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#222;"></span> Scale Tone</span>
+    <span id="blueLegend" style="display:none;"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#3a7ebf;"></span> Blue Note (b5)</span>
   </div>
-  <div class="test-area">
-    <div class="test-question" id="testQuestion">Press "Start Test" to begin</div>
-    <div class="test-diagram" id="testDiagram"></div>
-    <div class="test-options" id="testOptions"></div>
-    <div class="test-feedback" id="testFeedback"></div>
-    <button class="test-next" id="testNext" onclick="nextQuestion()">Next Question →</button>
-  </div>
-</div>
-
-<div id="print" class="tab">
-  <h1>Printable Flashcards</h1>
-  <p style="color:#aaa; margin-bottom:10px;">Print this page (Ctrl+P) to get fold-in-half flashcards. Front on left, back on right.</p>
-  <div class="fc-controls no-print">
-    <select id="printQuality">
-      <option value="all">Major & Minor</option>
-      <option value="major">Major Only</option>
-      <option value="minor">Minor Only</option>
-    </select>
-    <button class="print-btn" onclick="window.print()">Print Cards</button>
-  </div>
-  <div id="printArea"></div>
+  <div class="scale-positions" id="scalePositions"></div>
+  <div class="scale-full-neck" id="scaleFullNeck"></div>
 </div>
 
 <div id="circle" class="tab">
@@ -1012,185 +966,6 @@ function renderDiagrams() {
   }
 }
 
-// ===== TEST DASHBOARD =====
-let testState = { score: 0, total: 0, streak: 0, questions: [], qIdx: 0 };
-
-function generateQuestion(type, chords) {
-  const chord = chords[Math.floor(Math.random() * chords.length)];
-
-  if (type === 'name2notes') {
-    const correct = chord.notes.map(ENHARMONIC).join(' - ');
-    const rootDisplay = ENHARMONIC(chord.notes[0]);
-    const options = [correct];
-    // Generate wrong answers that share the same root note but wrong 3rd/5th
-    const allIntervals = [1,2,3,4,5,6,7,8,9,10,11];
-    const rootIdx = NOTES.indexOf(chord.root);
-    const shuffledIntervals = allIntervals.sort(() => Math.random() - 0.5);
-    let attempts = 0;
-    while (options.length < 4 && attempts < 30) {
-      attempts++;
-      // Pick two random intervals for fake 3rd and 5th
-      const fake3 = ENHARMONIC(noteName((rootIdx + shuffledIntervals[attempts % 11]) % 12));
-      const fake5 = ENHARMONIC(noteName((rootIdx + shuffledIntervals[(attempts + 3) % 11]) % 12));
-      const opt = `${rootDisplay} - ${fake3} - ${fake5}`;
-      if (!options.includes(opt) && opt !== correct) options.push(opt);
-    }
-    // Fallback if we somehow didn't get 4
-    while (options.length < 4) {
-      const rnd = chords[Math.floor(Math.random() * chords.length)];
-      const opt = rnd.notes.map(ENHARMONIC).join(' - ');
-      if (!options.includes(opt)) options.push(opt);
-    }
-    return { question: `What are the notes in <span class="highlight">${chord.label}</span>?`, correct, options: options.sort(() => Math.random()-0.5), type };
-  }
-
-  if (type === 'notes2name') {
-    const correct = chord.label;
-    const options = [correct];
-    while (options.length < 4) {
-      const rnd = chords[Math.floor(Math.random() * chords.length)];
-      if (!options.includes(rnd.label)) options.push(rnd.label);
-    }
-    return { question: `Name the chord: <span class="highlight">${chord.notes.map(ENHARMONIC).join(' - ')}</span>`, correct, options: options.sort(() => Math.random()-0.5), type };
-  }
-
-  if (type === 'diagram2name') {
-    if (chord.voicings.length === 0) return generateQuestion('name2notes', chords);
-    const v = chord.voicings[Math.floor(Math.random() * chord.voicings.length)];
-    const correct = chord.label;
-    const options = [correct];
-    while (options.length < 4) {
-      const rnd = chords[Math.floor(Math.random() * chords.length)];
-      if (!options.includes(rnd.label)) options.push(rnd.label);
-    }
-    return { question: `Identify this triad on ${STRING_SETS[v.stringSet].name}:`, correct, options: options.sort(() => Math.random()-0.5), type, voicing: v, stringSet: v.stringSet };
-  }
-}
-
-function startTest() {
-  const type = document.getElementById('testType').value;
-  const qual = document.getElementById('testQuality').value;
-
-  let chords = ALL_CHORDS;
-  if (qual === 'major') chords = chords.filter(c => c.quality === 'major');
-  if (qual === 'minor') chords = chords.filter(c => c.quality === 'minor');
-
-  testState = { score: 0, total: 0, streak: 0, questions: [], qIdx: 0 };
-
-  const types = type === 'mixed' ? ['name2notes','notes2name','diagram2name'] : [type];
-  for (let i = 0; i < 20; i++) {
-    const t = types[Math.floor(Math.random() * types.length)];
-    testState.questions.push(generateQuestion(t, chords));
-  }
-
-  updateTestStats();
-  showQuestion();
-}
-
-function showQuestion() {
-  if (testState.qIdx >= testState.questions.length) {
-    document.getElementById('testQuestion').innerHTML = `Test Complete! Score: ${testState.score}/${testState.total} (${Math.round(testState.score/testState.total*100)}%)`;
-    document.getElementById('testOptions').innerHTML = '';
-    document.getElementById('testDiagram').innerHTML = '';
-    document.getElementById('testFeedback').textContent = '';
-    document.getElementById('testNext').style.display = 'none';
-    return;
-  }
-
-  const q = testState.questions[testState.qIdx];
-  document.getElementById('testQuestion').innerHTML = q.question;
-  document.getElementById('testFeedback').textContent = '';
-  document.getElementById('testFeedback').className = 'test-feedback';
-  document.getElementById('testNext').style.display = 'none';
-
-  // Diagram if applicable
-  const diagDiv = document.getElementById('testDiagram');
-  diagDiv.innerHTML = '';
-  if (q.voicing) {
-    const canvas = document.createElement('canvas');
-    diagDiv.appendChild(canvas);
-    drawFretboard(canvas, q.voicing, STRING_SETS[q.stringSet]);
-    // Show inversion info
-    const info = document.createElement('div');
-    info.style.cssText = 'text-align:center;color:#aaa;font-size:13px;margin-top:4px;';
-    info.textContent = `${q.voicing.inversion} (${q.voicing.abbr}) | Frets: ${q.voicing.frets.join('-')}`;
-    diagDiv.appendChild(info);
-  }
-
-  const optDiv = document.getElementById('testOptions');
-  optDiv.innerHTML = '';
-  for (const opt of q.options) {
-    const btn = document.createElement('button');
-    btn.textContent = opt;
-    btn.onclick = () => answerQuestion(opt, q.correct);
-    optDiv.appendChild(btn);
-  }
-}
-
-function answerQuestion(selected, correct) {
-  const btns = document.querySelectorAll('#testOptions button');
-  btns.forEach(b => {
-    b.disabled = true;
-    if (b.textContent === correct) b.classList.add('correct');
-    if (b.textContent === selected && selected !== correct) b.classList.add('wrong');
-  });
-
-  testState.total++;
-  const fb = document.getElementById('testFeedback');
-  if (selected === correct) {
-    testState.score++;
-    testState.streak++;
-    fb.textContent = 'Correct!';
-    fb.className = 'test-feedback correct-fb';
-  } else {
-    testState.streak = 0;
-    fb.textContent = `Incorrect — the answer is ${correct}`;
-    fb.className = 'test-feedback wrong-fb';
-  }
-
-  updateTestStats();
-  document.getElementById('testNext').style.display = 'inline-block';
-}
-
-function nextQuestion() {
-  testState.qIdx++;
-  showQuestion();
-}
-
-function updateTestStats() {
-  document.getElementById('testScore').textContent = testState.score;
-  document.getElementById('testTotal').textContent = testState.total;
-  document.getElementById('testPct').textContent = testState.total ? Math.round(testState.score/testState.total*100) + '%' : '0%';
-  document.getElementById('testStreak').textContent = testState.streak;
-}
-
-// ===== PRINT CARDS =====
-function renderPrintCards() {
-  const qual = document.getElementById('printQuality')?.value || 'all';
-  let chords = ALL_CHORDS;
-  if (qual === 'major') chords = chords.filter(c => c.quality === 'major');
-  if (qual === 'minor') chords = chords.filter(c => c.quality === 'minor');
-
-  const area = document.getElementById('printArea');
-  let html = '<div class="print-cards" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">';
-
-  for (const chord of chords) {
-    html += `
-      <div class="print-card" style="border:2px solid #ddd; border-radius:8px; padding:15px; text-align:center; background:#fff;">
-        <div class="label" style="color:#888; font-size:11px; text-transform:uppercase; letter-spacing:1px;">What are the notes in:</div>
-        <div class="main" style="font-size:24px; font-weight:bold; color:#e07030; margin:8px 0;">${chord.label}</div>
-        <div class="sub" style="color:#888; font-size:12px;">${chord.quality === 'major' ? 'Major Triad' : 'Minor Triad'}</div>
-      </div>
-      <div class="print-card" style="border:2px solid #ddd; border-radius:8px; padding:15px; text-align:center; background:#fafaf5;">
-        <div class="label" style="color:#888; font-size:11px; text-transform:uppercase; letter-spacing:1px;">Answer:</div>
-        <div class="main" style="font-size:20px; font-weight:bold; color:#2d7a2d; margin:8px 0;">${chord.notes.map(ENHARMONIC).join('  —  ')}</div>
-        <div class="sub" style="color:#666; font-size:12px;">R: ${ENHARMONIC(chord.notes[0])} | 3rd: ${ENHARMONIC(chord.notes[1])} | 5th: ${ENHARMONIC(chord.notes[2])}</div>
-      </div>`;
-  }
-  html += '</div>';
-  area.innerHTML = html;
-}
-
 // ===== TAB NAVIGATION =====
 function showTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1199,10 +974,10 @@ function showTab(id) {
   event.target.classList.add('active');
 
   if (id === 'diagrams') renderDiagrams();
-  if (id === 'print') renderPrintCards();
   if (id === 'flashcards' && fcCards.length === 0) buildFCCards();
   if (id === 'circle') drawCircleOfFifths();
   if (id === 'songs') renderSongs();
+  if (id === 'scales') renderScales();
 }
 
 // ===== CIRCLE OF FIFTHS =====
@@ -1568,6 +1343,36 @@ SONG_DATA.forEach(s => {
   s.url = 'https://www.ultimate-guitar.com/search.php?search_type=title&value=' + encodeURIComponent(s.title.replace(/\s*\(.*?\)\s*/g, ' ').trim() + ' ' + s.artist.split('/')[0].trim());
 });
 
+// Add YouTube lesson URLs to all songs
+// Marty Music covers most classic rock, blues standards, folk classics
+// For R&B/Soul, obscure blues, and niche artists, use artist+song search
+SONG_DATA.forEach(s => {
+  const cleanTitle = s.title.replace(/\s*\(.*?\)\s*/g, ' ').trim();
+  const artist = s.artist.split('/')[0].trim();
+
+  // Artists/songs Marty Music has almost certainly covered
+  const martyArtists = [
+    'Led Zeppelin', 'Jimi Hendrix', 'Eric Clapton', 'Tom Petty',
+    'Pink Floyd', 'Rolling Stones', 'Fleetwood Mac', 'Bob Dylan',
+    'Neil Young', 'Cat Stevens', 'Simon & Garfunkel', 'Van Morrison',
+    'The White Stripes', 'Grateful Dead', 'Dire Straits', 'Eagles',
+    'Cream', 'Crosby, Stills & Nash', 'Crosby, Stills, Nash & Young',
+    'The Band', 'B.B. King', 'Robert Johnson', 'Muddy Waters',
+    'Stevie Ray Vaughan', 'Allman Brothers', 'Joni Mitchell',
+    'Cream / Eric Clapton'
+  ];
+
+  const isMarty = martyArtists.some(a => artist === a || s.artist === a);
+
+  let query;
+  if (isMarty) {
+    query = 'marty+music+' + encodeURIComponent(cleanTitle).replace(/%20/g, '+') + '+guitar+lesson';
+  } else {
+    query = encodeURIComponent(cleanTitle + ' ' + artist + ' guitar lesson').replace(/%20/g, '+');
+  }
+  s.lessonUrl = 'https://www.youtube.com/results?search_query=' + query;
+});
+
 let songGenreFilter = 'All';
 let songDiffFilter = 'All';
 let songInstFilter = 'All';
@@ -1680,15 +1485,459 @@ function renderSongs() {
         ${s.chords ? `<div class="song-chords">Chords: ${s.chords}</div>` : ''}
       </div>
       <div class="song-key">${s.key || ''}</div>
-      <a class="song-link" href="${s.url}" target="_blank" rel="noopener">Open Tab</a>
+      <div class="song-buttons">
+        <a class="song-link" href="${s.url}" target="_blank" rel="noopener">Open Tab</a>
+        <a class="song-lesson" href="${s.lessonUrl}" target="_blank" rel="noopener">Lesson</a>
+      </div>
     </div>
   `).join('');
 }
 
+// ===== SCALES TAB =====
+const SCALE_FORMULAS = {
+  major:        { name: 'Major', intervals: [0, 2, 4, 5, 7, 9, 11], blueNote: null },
+  natural_minor:{ name: 'Natural Minor', intervals: [0, 2, 3, 5, 7, 8, 10], blueNote: null },
+  major_pent:   { name: 'Major Pentatonic', intervals: [0, 2, 4, 7, 9], blueNote: null },
+  minor_pent:   { name: 'Minor Pentatonic', intervals: [0, 3, 5, 7, 10], blueNote: null },
+  blues:        { name: 'Blues Scale', intervals: [0, 3, 5, 6, 7, 10], blueNote: 6 },
+  dorian:       { name: 'Dorian Mode', intervals: [0, 2, 3, 5, 7, 9, 10], blueNote: null },
+  mixolydian:   { name: 'Mixolydian Mode', intervals: [0, 2, 4, 5, 7, 9, 10], blueNote: null },
+};
+
+// Standard tuning: string open-note indices (low E to high E)
+const SCALE_STRINGS = [
+  { name: 'E', root: 4 },  // low E (6th)
+  { name: 'A', root: 9 },  // A (5th)
+  { name: 'D', root: 2 },  // D (4th)
+  { name: 'G', root: 7 },  // G (3rd)
+  { name: 'B', root: 11 }, // B (2nd)
+  { name: 'e', root: 4 },  // high E (1st)
+];
+
+let currentScaleRoot = 0; // C by default
+let currentScaleType = 'major';
+
+function selectScaleRoot(noteIdx, btn) {
+  currentScaleRoot = noteIdx;
+  document.querySelectorAll('#scaleRootBar button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderScales();
+}
+
+function selectScaleType(type, btn) {
+  currentScaleType = type;
+  document.querySelectorAll('.scale-type-tabs button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderScales();
+}
+
+function initScaleRootBar() {
+  const bar = document.getElementById('scaleRootBar');
+  for (let i = 0; i < NOTES.length; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = ENHARMONIC(NOTES[i]).split('/')[0];
+    if (i === 0) btn.classList.add('active');
+    btn.onclick = () => selectScaleRoot(i, btn);
+    bar.appendChild(btn);
+  }
+}
+
+function getScaleNotes(rootIdx, scaleType) {
+  const formula = SCALE_FORMULAS[scaleType];
+  return formula.intervals.map(interval => (rootIdx + interval) % 12);
+}
+
+// Find all scale notes on all 6 strings within a fret range
+function getScaleNotesOnFretboard(rootIdx, scaleType, minFret, maxFret) {
+  const scaleNotes = getScaleNotes(rootIdx, scaleType);
+  const formula = SCALE_FORMULAS[scaleType];
+  const blueNoteVal = formula.blueNote !== null ? (rootIdx + formula.blueNote) % 12 : null;
+  const results = [];
+
+  for (let s = 0; s < 6; s++) {
+    const stringRoot = SCALE_STRINGS[s].root;
+    for (let f = minFret; f <= maxFret; f++) {
+      const noteVal = (stringRoot + f) % 12;
+      if (scaleNotes.includes(noteVal)) {
+        results.push({
+          string: s,
+          fret: f,
+          noteVal: noteVal,
+          isRoot: noteVal === rootIdx,
+          isBlue: noteVal === blueNoteVal
+        });
+      }
+    }
+  }
+  return results;
+}
+
+// Calculate 5 CAGED positions based on the root note
+function getScalePositions(rootIdx, scaleType) {
+  // Find the root fret on the low E string
+  const lowERoot = SCALE_STRINGS[0].root; // 4 (E)
+  let rootFret = (rootIdx - lowERoot + 12) % 12;
+  if (rootFret === 0) rootFret = 12; // Use fret 12 instead of 0 for open, to get positions spread out
+
+  // For open position keys (E, F, G, A, etc.), we want to include open position
+  const openRootFret = (rootIdx - lowERoot + 12) % 12;
+
+  // Define 5 position windows that span the neck
+  // Strategy: create windows starting near the root positions on low E string
+  const positions = [];
+  const starts = [];
+
+  // Find all root frets on low E from 0-15
+  const rootFrets = [];
+  for (let f = 0; f <= 15; f++) {
+    if ((lowERoot + f) % 12 === rootIdx) rootFrets.push(f);
+  }
+
+  // Build 5 positions based on spreading across the neck
+  // Use a sliding window approach: find 5 windows of 4 frets that cover 0-15
+  const windowSize = 4;
+  const allWindows = [];
+
+  for (let start = 0; start <= 12; start++) {
+    const notes = getScaleNotesOnFretboard(rootIdx, scaleType, start, start + windowSize);
+    // Count notes per string - we want good coverage
+    const stringsHit = new Set(notes.map(n => n.string)).size;
+    if (stringsHit >= 5) { // At least 5 strings should have notes
+      allWindows.push({ start, end: start + windowSize, noteCount: notes.length, stringsHit });
+    }
+  }
+
+  // Pick 5 well-spaced windows
+  if (allWindows.length >= 5) {
+    // Greedy: pick first, then pick next that doesn't overlap too much
+    const picked = [allWindows[0]];
+    for (const w of allWindows) {
+      if (picked.length >= 5) break;
+      const lastPicked = picked[picked.length - 1];
+      if (w.start >= lastPicked.start + 2) { // at least 2 frets apart
+        picked.push(w);
+      }
+    }
+    // If we still need more, fill in
+    for (const w of allWindows) {
+      if (picked.length >= 5) break;
+      if (!picked.includes(w)) picked.push(w);
+    }
+    picked.sort((a, b) => a.start - b.start);
+    return picked.slice(0, 5);
+  }
+
+  // Fallback: evenly spaced
+  for (let i = 0; i < 5; i++) {
+    const start = Math.round(i * 3);
+    allWindows.push({ start, end: start + windowSize });
+  }
+  return allWindows.slice(0, 5);
+}
+
+function drawScalePosition(canvas, rootIdx, scaleType, minFret, maxFret) {
+  const ctx = canvas.getContext('2d');
+  const w = 180, h = 240;
+  canvas.width = w;
+  canvas.height = h;
+
+  const numFrets = maxFret - minFret + 1;
+  const margin = { left: 30, top: 20, right: 15, bottom: 15 };
+  const neckW = w - margin.left - margin.right;
+  const neckH = h - margin.top - margin.bottom;
+  const stringSpacing = neckW / 5;
+  const fretSpacing = neckH / numFrets;
+
+  // Background
+  ctx.fillStyle = '#f5f5f0';
+  ctx.fillRect(0, 0, w, h);
+
+  // Fretboard background
+  ctx.fillStyle = '#e8e4da';
+  ctx.fillRect(margin.left, margin.top, neckW, neckH);
+
+  // Nut if starting at fret 0
+  if (minFret === 0) {
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, margin.top);
+    ctx.lineTo(margin.left + neckW, margin.top);
+    ctx.stroke();
+  }
+
+  // Fret lines (horizontal)
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 1;
+  for (let f = 0; f <= numFrets; f++) {
+    const y = margin.top + f * fretSpacing;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + neckW, y);
+    ctx.stroke();
+  }
+
+  // String lines (vertical) - low E on left, high E on right
+  for (let s = 0; s < 6; s++) {
+    const x = margin.left + s * stringSpacing;
+    const gauge = 2.0 - s * 0.25;
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = Math.max(0.5, gauge * 0.5);
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + neckH);
+    ctx.stroke();
+  }
+
+  // Fret numbers on left
+  ctx.fillStyle = '#888';
+  ctx.font = '10px Arial';
+  ctx.textAlign = 'right';
+  for (let f = 0; f < numFrets; f++) {
+    const fretNum = minFret + f + (minFret === 0 ? 1 : 1);
+    const y = margin.top + f * fretSpacing + fretSpacing / 2;
+    ctx.fillText(String(minFret + f + 1), margin.left - 6, y + 3);
+  }
+
+  // Fret marker dots
+  const fretMarkers = [3, 5, 7, 9, 12, 15];
+  ctx.fillStyle = '#ccc8be';
+  for (let f = 0; f < numFrets; f++) {
+    const actualFret = minFret + f + 1;
+    if (fretMarkers.includes(actualFret)) {
+      const y = margin.top + f * fretSpacing + fretSpacing / 2;
+      const cx = margin.left + neckW / 2;
+      if (actualFret === 12) {
+        ctx.beginPath();
+        ctx.arc(cx - stringSpacing, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(cx + stringSpacing, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(cx, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Draw scale notes
+  const notes = getScaleNotesOnFretboard(rootIdx, scaleType, minFret + 1, maxFret + 1);
+  // Also check for open string notes if minFret is 0
+  if (minFret === 0) {
+    const openNotes = getScaleNotesOnFretboard(rootIdx, scaleType, 0, 0);
+    notes.push(...openNotes);
+  }
+
+  const noteRadius = 9;
+  for (const note of notes) {
+    const x = margin.left + note.string * stringSpacing;
+    let y;
+    if (note.fret === 0) {
+      y = margin.top - 2; // Just above the nut
+    } else {
+      const fretIdx = note.fret - minFret - 1;
+      y = margin.top + fretIdx * fretSpacing + fretSpacing / 2;
+    }
+
+    if (y < margin.top - 10 || y > margin.top + neckH + 5) continue;
+
+    ctx.beginPath();
+    ctx.arc(x, y, noteRadius, 0, Math.PI * 2);
+    if (note.isRoot) {
+      ctx.fillStyle = '#e07030';
+    } else if (note.isBlue) {
+      ctx.fillStyle = '#3a7ebf';
+    } else {
+      ctx.fillStyle = '#222';
+    }
+    ctx.fill();
+
+    // Note name label
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(NOTES[note.noteVal], x, y);
+  }
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawScaleFullNeck(canvas, rootIdx, scaleType) {
+  const ctx = canvas.getContext('2d');
+  const totalFrets = 15;
+  const w = 960, h = 190;
+  canvas.width = w;
+  canvas.height = h;
+
+  const margin = { left: 40, top: 30, right: 30, bottom: 35 };
+  const neckW = w - margin.left - margin.right;
+  const neckH = h - margin.top - margin.bottom;
+  const fretSpacing = neckW / totalFrets;
+  const stringSpacing = neckH / 5;
+  const fretMarkers = [3, 5, 7, 9, 12];
+
+  // Background
+  ctx.fillStyle = '#f5f5f0';
+  ctx.fillRect(0, 0, w, h);
+
+  // Fretboard background
+  ctx.fillStyle = '#e8e4da';
+  ctx.fillRect(margin.left, margin.top, neckW, neckH);
+
+  // Fret marker dots
+  ctx.fillStyle = '#ccc8be';
+  for (const fm of fretMarkers) {
+    if (fm <= totalFrets) {
+      const x = margin.left + (fm - 0.5) * fretSpacing;
+      if (fm === 12) {
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH * 0.3, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH * 0.7, 5, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(x, margin.top + neckH / 2, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+
+  // Fret lines (vertical)
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 1;
+  for (let f = 1; f <= totalFrets; f++) {
+    const x = margin.left + f * fretSpacing;
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + neckH);
+    ctx.stroke();
+  }
+
+  // Nut
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + neckH);
+  ctx.stroke();
+
+  // Strings (horizontal) - top = high E, bottom = low E
+  for (let s = 0; s < 6; s++) {
+    const y = margin.top + s * stringSpacing;
+    const gauge = 0.5 + s * 0.3;
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = gauge;
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(margin.left + neckW, y);
+    ctx.stroke();
+
+    // String name on left (top = high E, bottom = low E)
+    const displayString = SCALE_STRINGS[5 - s];
+    ctx.fillStyle = '#444';
+    ctx.font = 'bold 12px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(displayString.name, margin.left - 8, y + 4);
+  }
+
+  // Fret numbers below
+  ctx.fillStyle = '#888';
+  ctx.font = '11px Arial';
+  ctx.textAlign = 'center';
+  for (const f of [3, 5, 7, 9, 12, 15]) {
+    if (f <= totalFrets) {
+      ctx.fillText(String(f), margin.left + (f - 0.5) * fretSpacing, margin.top + neckH + 18);
+    }
+  }
+
+  // Draw scale notes
+  const allNotes = getScaleNotesOnFretboard(rootIdx, scaleType, 0, totalFrets);
+  const noteRadius = 10;
+
+  function fretX(fret) {
+    if (fret === 0) return margin.left - 4;
+    return margin.left + (fret - 0.5) * fretSpacing;
+  }
+  function stringY(stringIdx) {
+    // stringIdx 0 = low E = bottom, 5 = high E = top
+    return margin.top + (5 - stringIdx) * stringSpacing;
+  }
+
+  for (const note of allNotes) {
+    const x = fretX(note.fret);
+    const y = stringY(note.string);
+
+    ctx.beginPath();
+    ctx.arc(x, y, noteRadius, 0, Math.PI * 2);
+    if (note.isRoot) {
+      ctx.fillStyle = '#e07030';
+    } else if (note.isBlue) {
+      ctx.fillStyle = '#3a7ebf';
+    } else {
+      ctx.fillStyle = '#222';
+    }
+    ctx.fill();
+
+    // Outline
+    ctx.strokeStyle = note.isRoot ? '#ff9050' : (note.isBlue ? '#5a9ed6' : '#555');
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Note name
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 9px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(NOTES[note.noteVal], x, y);
+  }
+  ctx.textBaseline = 'alphabetic';
+}
+
+function renderScales() {
+  const formula = SCALE_FORMULAS[currentScaleType];
+  const rootName = ENHARMONIC(NOTES[currentScaleRoot]).split('/')[0];
+
+  // Show/hide blue note legend
+  document.getElementById('blueLegend').style.display = currentScaleType === 'blues' ? 'inline-flex' : 'none';
+
+  // Get 5 positions
+  const positions = getScalePositions(currentScaleRoot, currentScaleType);
+
+  // Render position diagrams
+  const posContainer = document.getElementById('scalePositions');
+  posContainer.innerHTML = '';
+
+  positions.forEach((pos, i) => {
+    const card = document.createElement('div');
+    card.className = 'scale-pos-card';
+    card.innerHTML = `<h4>Position ${i + 1}</h4><div class="fret-range">Frets ${pos.start + 1} - ${pos.end + 1}</div>`;
+    const canvas = document.createElement('canvas');
+    card.appendChild(canvas);
+    posContainer.appendChild(card);
+    drawScalePosition(canvas, currentScaleRoot, currentScaleType, pos.start, pos.end);
+  });
+
+  // Render full neck diagram
+  const fullContainer = document.getElementById('scaleFullNeck');
+  fullContainer.innerHTML = '';
+  const fullCard = document.createElement('div');
+  fullCard.className = 'scale-full-card';
+  fullCard.innerHTML = `<h4>Extended: All Positions - ${rootName} ${formula.name}</h4>`;
+  const fullCanvas = document.createElement('canvas');
+  fullCard.appendChild(fullCanvas);
+  fullContainer.appendChild(fullCard);
+  drawScaleFullNeck(fullCanvas, currentScaleRoot, currentScaleType);
+}
+
 // ===== INIT =====
 window.addEventListener('DOMContentLoaded', () => {
-  // Initialize root note bar for diagrams
+  // Initialize root note bars
   initRootNoteBar();
+  initScaleRootBar();
 
   // Attach change handlers for flashcard controls
   document.getElementById('fcMode').addEventListener('change', buildFCCards);
