@@ -1500,6 +1500,7 @@ function renderSongs() {
     s.note.toLowerCase().includes(songSearchTerm) ||
     (s.strumPattern && s.strumPattern.toLowerCase().includes(songSearchTerm))
   );
+  songs = [...songs].sort((a, b) => a.title.localeCompare(b.title));
 
   document.getElementById('songsCount').textContent = `Showing ${songs.length} of ${SONG_DATA.length} songs`;
 
