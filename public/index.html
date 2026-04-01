@@ -119,6 +119,47 @@
     .diagram-card h4 { color: #000; }
   }
   .print-cards { display: none; }
+
+  /* Circle of Fifths */
+  .cof-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .cof-canvas-wrap { position: relative; }
+  .cof-canvas-wrap canvas { cursor: pointer; }
+  .cof-info { width: 100%; max-width: 800px; }
+  .cof-info-card { background: #fff; border-radius: 12px; padding: 20px 28px; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+  .cof-info-card h3 { color: #e07030; margin-bottom: 12px; font-size: 20px; }
+  .cof-chords-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .cof-chord-box { background: #f5f5f0; border: 1px solid #ddd; border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 60px; }
+  .cof-chord-box .roman { font-size: 12px; color: #888; text-transform: uppercase; }
+  .cof-chord-box .chord-name { font-size: 18px; font-weight: bold; color: #333; }
+  .cof-chord-box.highlight { border-color: #e07030; background: #fdf5f0; }
+  .cof-prog { background: #f5f5f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
+  .cof-prog .prog-label { font-weight: bold; color: #555; font-size: 14px; margin-bottom: 4px; }
+  .cof-prog .prog-roman { color: #888; font-size: 13px; }
+  .cof-prog .prog-chords { color: #e07030; font-weight: bold; font-size: 16px; }
+
+  /* Songs Tab */
+  .songs-controls { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+  .songs-search { width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; background: #fff; color: #333; }
+  .songs-search:focus { outline: none; border-color: #e07030; }
+  .songs-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .songs-filters .filter-label { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-right: 2px; }
+  .songs-filters button { padding: 6px 14px; border-radius: 16px; border: 1px solid #ccc; background: #fff; color: #666; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .songs-filters button:hover { border-color: #e07030; color: #e07030; }
+  .songs-filters button.active { background: #e07030; color: #fff; border-color: #e07030; }
+  .songs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .song-card { background: #fff; border-radius: 12px; padding: 18px; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 8px; }
+  .song-card .song-title { font-size: 18px; font-weight: bold; color: #333; }
+  .song-card .song-artist { font-size: 14px; color: #888; }
+  .song-card .song-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .song-card .song-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .song-tag.genre { background: #f0e6d6; color: #9a6b30; }
+  .song-tag.difficulty { background: #e0f0e0; color: #3a7a3a; }
+  .song-tag.instrument { background: #dde8f0; color: #3a6a8a; }
+  .song-tag.key-tag { background: #f5f0fa; color: #6a4a8a; }
+  .song-card .song-note { font-size: 13px; color: #666; line-height: 1.4; }
+  .song-card .song-link { display: inline-block; margin-top: auto; padding: 8px 16px; background: #e07030; color: #fff; border: none; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; cursor: pointer; transition: background 0.15s; }
+  .song-card .song-link:hover { background: #c8612a; }
+  .songs-count { color: #888; font-size: 14px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -128,6 +169,8 @@
   <button onclick="showTab('diagrams')">Fretboard Diagrams</button>
   <button onclick="showTab('test')">Test Dashboard</button>
   <button onclick="showTab('print')">Print Cards</button>
+  <button onclick="showTab('circle')">Circle of Fifths</button>
+  <button onclick="showTab('songs')">Songs</button>
 </div>
 
 <div id="flashcards" class="tab active">
@@ -226,6 +269,36 @@
     <button class="print-btn" onclick="window.print()">Print Cards</button>
   </div>
   <div id="printArea"></div>
+</div>
+
+<div id="circle" class="tab">
+  <h1>Circle of Fifths</h1>
+  <div class="cof-container">
+    <div class="cof-canvas-wrap">
+      <canvas id="cofCanvas" width="560" height="560"></canvas>
+    </div>
+    <div class="cof-info" id="cofInfo">
+      <p style="color:#888; text-align:center;">Click a key on the circle to see its diatonic chords and common progressions.</p>
+    </div>
+  </div>
+</div>
+
+<div id="songs" class="tab">
+  <h1>Song Library</h1>
+  <div class="songs-controls">
+    <input type="text" class="songs-search" id="songSearch" placeholder="Search songs or artists...">
+    <div class="songs-filters" id="genreFilters">
+      <span class="filter-label">Genre:</span>
+    </div>
+    <div class="songs-filters" id="diffFilters">
+      <span class="filter-label">Difficulty:</span>
+    </div>
+    <div class="songs-filters" id="instFilters">
+      <span class="filter-label">Best on:</span>
+    </div>
+  </div>
+  <div class="songs-count" id="songsCount"></div>
+  <div class="songs-grid" id="songsGrid"></div>
 </div>
 
 <script>
@@ -1044,6 +1117,431 @@ function showTab(id) {
   if (id === 'diagrams') renderDiagrams();
   if (id === 'print') renderPrintCards();
   if (id === 'flashcards' && fcCards.length === 0) buildFCCards();
+  if (id === 'circle') drawCircleOfFifths();
+  if (id === 'songs') renderSongs();
+}
+
+// ===== CIRCLE OF FIFTHS =====
+const COF_KEYS = [
+  { major: 'C',  minor: 'Am',  sharps: 0, flats: 0, label: '0' },
+  { major: 'G',  minor: 'Em',  sharps: 1, flats: 0, label: '1#' },
+  { major: 'D',  minor: 'Bm',  sharps: 2, flats: 0, label: '2#' },
+  { major: 'A',  minor: 'F#m', sharps: 3, flats: 0, label: '3#' },
+  { major: 'E',  minor: 'C#m', sharps: 4, flats: 0, label: '4#' },
+  { major: 'B',  minor: 'G#m', sharps: 5, flats: 0, label: '5#', altMajor: 'Cb', altMinor: 'Abm' },
+  { major: 'F#', minor: 'D#m', sharps: 6, flats: 6, label: '6#/6b', altMajor: 'Gb', altMinor: 'Ebm' },
+  { major: 'Db', minor: 'Bbm', sharps: 0, flats: 5, label: '5b', altMajor: 'C#' },
+  { major: 'Ab', minor: 'Fm',  sharps: 0, flats: 4, label: '4b' },
+  { major: 'Eb', minor: 'Cm',  sharps: 0, flats: 3, label: '3b' },
+  { major: 'Bb', minor: 'Gm',  sharps: 0, flats: 2, label: '2b' },
+  { major: 'F',  minor: 'Dm',  sharps: 0, flats: 1, label: '1b' },
+];
+
+let cofSelectedKey = null;
+
+function drawCircleOfFifths() {
+  const canvas = document.getElementById('cofCanvas');
+  const ctx = canvas.getContext('2d');
+  const w = 560, h = 560;
+  const cx = w / 2, cy = h / 2;
+  const outerR = 240, innerR = 175, innerR2 = 120, centerR = 70;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Determine which keys to highlight (in the selected key's diatonic set)
+  let highlightMajors = new Set();
+  let highlightMinors = new Set();
+  if (cofSelectedKey !== null) {
+    const k = COF_KEYS[cofSelectedKey];
+    const diatonic = getDiatonicChords(k.major);
+    diatonic.forEach(d => {
+      const name = d.name.replace('dim', '').replace('m', '');
+      if (d.name.endsWith('dim')) return;
+      if (d.name.endsWith('m') && !d.name.endsWith('dim')) highlightMinors.add(d.name);
+      else highlightMajors.add(d.name);
+    });
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const k = COF_KEYS[i];
+    const angle = -Math.PI / 2 + (i * Math.PI * 2 / 12);
+    const nextAngle = -Math.PI / 2 + ((i + 1) * Math.PI * 2 / 12);
+    const midAngle = (angle + nextAngle) / 2;
+
+    // Outer ring (major) segment
+    const isSelectedMajor = cofSelectedKey === i;
+    const isHighlightMajor = highlightMajors.has(k.major);
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, angle, nextAngle);
+    ctx.arc(cx, cy, innerR, nextAngle, angle, true);
+    ctx.closePath();
+    ctx.fillStyle = isSelectedMajor ? '#e07030' : isHighlightMajor ? '#f5dcc8' : '#f0efe8';
+    ctx.fill();
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Major key label
+    const labelR = (outerR + innerR) / 2;
+    const lx = cx + Math.cos(midAngle) * labelR;
+    const ly = cy + Math.sin(midAngle) * labelR;
+    ctx.fillStyle = isSelectedMajor ? '#fff' : '#333';
+    ctx.font = 'bold 18px Segoe UI, Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const majorLabel = k.altMajor ? k.major + '/' + k.altMajor : k.major;
+    ctx.fillText(majorLabel, lx, ly - 8);
+    ctx.font = '11px Arial';
+    ctx.fillStyle = isSelectedMajor ? 'rgba(255,255,255,0.7)' : '#aaa';
+    ctx.fillText(k.label, lx, ly + 10);
+
+    // Inner ring (minor) segment
+    const isHighlightMinor = highlightMinors.has(k.minor);
+    const isSelectedMinor = cofSelectedKey === i;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR, angle, nextAngle);
+    ctx.arc(cx, cy, innerR2, nextAngle, angle, true);
+    ctx.closePath();
+    ctx.fillStyle = isSelectedMinor ? '#c85a20' : isHighlightMinor ? '#f5dcc8' : '#e8e7e0';
+    ctx.fill();
+    ctx.strokeStyle = '#ccc';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Minor key label
+    const minorR = (innerR + innerR2) / 2;
+    const mx = cx + Math.cos(midAngle) * minorR;
+    const my = cy + Math.sin(midAngle) * minorR;
+    ctx.fillStyle = isSelectedMinor ? '#fff' : '#555';
+    ctx.font = 'bold 14px Segoe UI, Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const minorLabel = k.altMinor ? k.minor + '/' + k.altMinor : k.minor;
+    ctx.fillText(minorLabel, mx, my);
+  }
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, centerR, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+  ctx.strokeStyle = '#ddd';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.fillStyle = '#e07030';
+  ctx.font = 'bold 16px Segoe UI, Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('Circle of', cx, cy - 10);
+  ctx.fillText('Fifths', cx, cy + 10);
+
+  // Click handling
+  canvas.onclick = function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const dx = x - cx, dy = y - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < innerR2 || dist > outerR) return;
+    let angle = Math.atan2(dy, dx) + Math.PI / 2;
+    if (angle < 0) angle += Math.PI * 2;
+    const idx = Math.floor(angle / (Math.PI * 2 / 12));
+    cofSelectedKey = idx % 12;
+    drawCircleOfFifths();
+    renderCofInfo();
+  };
+}
+
+function getDiatonicChords(keyName) {
+  // Map key name to a root note index and build the diatonic chords
+  const keyMap = { 'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11, 'F#': 6, 'Gb': 6, 'Db': 1, 'C#': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5, 'Cb': 11 };
+  const root = keyMap[keyName];
+  // Major scale intervals: W W H W W W H = 0 2 4 5 7 9 11
+  const scaleIntervals = [0, 2, 4, 5, 7, 9, 11];
+  const qualities = ['major', 'minor', 'minor', 'major', 'major', 'minor', 'dim'];
+  const romanNumerals = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+
+  // Use proper note names for the key (prefer flats or sharps based on the key)
+  const flatKeys = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'];
+  const useFlats = flatKeys.includes(keyName);
+
+  const noteNames = useFlats
+    ? ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+    : ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+  return scaleIntervals.map((interval, i) => {
+    const noteIdx = (root + interval) % 12;
+    const noteName = noteNames[noteIdx];
+    let name;
+    if (qualities[i] === 'major') name = noteName;
+    else if (qualities[i] === 'minor') name = noteName + 'm';
+    else name = noteName + 'dim';
+    return { name, roman: romanNumerals[i], quality: qualities[i] };
+  });
+}
+
+function renderCofInfo() {
+  const info = document.getElementById('cofInfo');
+  if (cofSelectedKey === null) {
+    info.innerHTML = '<p style="color:#888; text-align:center;">Click a key on the circle to see its diatonic chords and common progressions.</p>';
+    return;
+  }
+  const k = COF_KEYS[cofSelectedKey];
+  const chords = getDiatonicChords(k.major);
+
+  let html = `<div class="cof-info-card">
+    <h3>Key of ${k.major} Major / ${k.minor}</h3>
+    <p style="color:#888; margin-bottom:12px;">Diatonic Chords:</p>
+    <div class="cof-chords-row">`;
+  chords.forEach(c => {
+    html += `<div class="cof-chord-box">
+      <div class="roman">${c.roman}</div>
+      <div class="chord-name">${c.name}</div>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  // Common progressions
+  const progs = [
+    { label: 'I - IV - V (Classic Rock/Blues)', numerals: [0, 3, 4] },
+    { label: 'I - V - vi - IV (Pop/Rock Anthem)', numerals: [0, 4, 5, 3] },
+    { label: 'ii - V - I (Jazz Standard)', numerals: [1, 4, 0] },
+    { label: 'I - vi - IV - V (50s Doo-Wop)', numerals: [0, 5, 3, 4] },
+    { label: '12-Bar Blues: I-I-I-I-IV-IV-I-I-V-IV-I-V', numerals: [0,0,0,0,3,3,0,0,4,3,0,4] },
+  ];
+
+  html += `<div class="cof-info-card"><h3>Common Progressions in ${k.major}</h3>`;
+  for (const prog of progs) {
+    const romanStr = prog.numerals.map(n => chords[n].roman).join(' - ');
+    const chordStr = prog.numerals.map(n => chords[n].name).join(' - ');
+    html += `<div class="cof-prog">
+      <div class="prog-label">${prog.label}</div>
+      <div class="prog-roman">${romanStr}</div>
+      <div class="prog-chords">${chordStr}</div>
+    </div>`;
+  }
+  html += `</div>`;
+
+  info.innerHTML = html;
+}
+
+// ===== SONGS TAB =====
+const SONG_DATA = [
+  // Classic Rock - Led Zeppelin
+  { title: "Stairway to Heaven (Intro)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", note: "Iconic fingerpicked intro. Great for building fingerpicking independence and arpeggios." },
+  { title: "Over the Hills and Far Away", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", note: "Beautiful acoustic intro with hammer-ons. Great picking exercise that sounds impressive." },
+  { title: "Going to California", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", note: "Open tuning folk-influenced piece. Gentle fingerpicking with a sing-along melody." },
+  { title: "Babe I'm Gonna Leave You", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", note: "Dynamic arpeggiated intro builds to powerful strumming. Teaches dynamics and control." },
+  { title: "The Rain Song", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "G", note: "Beautiful chord voicings and gentle dynamics. Great for learning extended chords." },
+  { title: "Black Dog (Riff)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "A", note: "Iconic syncopated riff. Great for rhythmic precision and feel." },
+
+  // Classic Rock - Hendrix
+  { title: "Hey Joe", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", note: "Classic chord progression with embellishments. Foundation for Hendrix-style rhythm playing." },
+  { title: "Little Wing", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Em", note: "Chord-melody masterpiece. Teaches Hendrix chord embellishment style with double stops." },
+  { title: "The Wind Cries Mary", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "F", note: "Smooth chord movement with signature Hendrix fills between changes." },
+  { title: "Voodoo Child (Slight Return)", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "E", note: "Wah-drenched blues-rock masterclass. The opening riff alone is worth learning." },
+
+  // Classic Rock - Eric Clapton
+  { title: "I Shot the Sheriff (Live)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Gm", note: "Reggae-influenced rhythm with great solo opportunities. Fun groove to play." },
+  { title: "Wonderful Tonight", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "G", note: "Simple chord progression with a memorable intro lead line. Perfect beginner song." },
+  { title: "Layla (Unplugged)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Dm", note: "Acoustic reimagining with beautiful fingerpicking and slide work." },
+  { title: "Cocaine", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", note: "Classic blues-rock riff based on a simple but powerful E blues pattern." },
+  { title: "Before You Accuse Me", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", note: "Shuffle blues standard. Great for learning 12-bar blues rhythm guitar." },
+
+  // Classic Rock - Tom Petty
+  { title: "Free Fallin'", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "F", note: "Three chords and pure joy. One of the best campfire songs ever written." },
+  { title: "Learning to Fly", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "F", note: "Simple, uplifting chord progression. Great for building confidence with open chords." },
+  { title: "Won't Back Down", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "Em", note: "Driving rhythm with basic chords. An anthem that's accessible to new players." },
+  { title: "American Girl", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "D", note: "Jangly open-string riff with a driving rhythm. Great for building right-hand speed." },
+
+  // Classic Rock - Dire Straits
+  { title: "Sultans of Swing", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Dm", note: "Mark Knopfler's fingerstyle electric masterpiece. Clean tone, incredible phrasing." },
+  { title: "Romeo and Juliet", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "F", note: "Beautiful fingerpicked intro with a storytelling quality. Emotional dynamics." },
+
+  // Classic Rock - Rolling Stones
+  { title: "Wild Horses", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Open chord ballad with a beautiful melody. Classic acoustic strumming song." },
+  { title: "Start Me Up", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", note: "Keith Richards open-G tuning classic. Iconic riff that defines rock rhythm guitar." },
+  { title: "Brown Sugar", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", note: "Driving riff with open-G tuning swagger. Pure rock and roll energy." },
+  { title: "Gimme Shelter", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "C#", note: "Haunting intro with tremolo effect. Teaches dynamics and atmosphere in playing." },
+
+  // Classic Rock - Pink Floyd
+  { title: "Comfortably Numb", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Bm", note: "Two of the greatest guitar solos ever. The chord progression is deceptively simple." },
+  { title: "Wish You Were Here", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "Em", note: "Iconic 12-string intro and simple chords. A must-learn for any guitarist." },
+  { title: "Time (Solo)", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "F#m", note: "Melodic solo showcasing Gilmour's bending and vibrato. Emotional and technical." },
+
+  // Classic Rock - Fleetwood Mac
+  { title: "Landslide", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", note: "Travis picking pattern with simple chords. Beautiful and meditative to practice." },
+  { title: "The Chain", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Em", note: "Famous bass-driven breakdown and building intensity. Great ensemble piece." },
+  { title: "Oh Well", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Both", key: "Em", note: "Peter Green's acoustic-to-electric showcase. Fingerpicked intro is a classic exercise." },
+
+  // Blues
+  { title: "The Thrill Is Gone", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bm", note: "The quintessential blues guitar song. Learn B.B.'s vibrato and phrasing style." },
+  { title: "Every Day I Have the Blues", artist: "B.B. King", genre: "Blues", difficulty: "Beginner", instrument: "Electric", key: "Bb", note: "Upbeat shuffle blues. Great for learning basic blues rhythm and lead patterns." },
+  { title: "Rock Me Baby", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bb", note: "Classic slow blues groove with room for expressive soloing and bends." },
+  { title: "Cross Road Blues", artist: "Robert Johnson", genre: "Blues", difficulty: "Intermediate", instrument: "Acoustic", key: "A", note: "Foundation of blues guitar. Open-position slide and fingerpicking patterns." },
+  { title: "Sweet Home Chicago", artist: "Robert Johnson", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", note: "12-bar blues standard everyone should know. Great for jam sessions." },
+  { title: "Hoochie Coochie Man", artist: "Muddy Waters", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "A", note: "Stop-time blues riff that defines Chicago blues. Power and swagger." },
+  { title: "Born Under a Bad Sign", artist: "Albert King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C#m", note: "Iconic blues-funk riff. Albert King's bending style is essential learning." },
+  { title: "Hide Away", artist: "Freddie King", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "E", note: "Instrumental blues shuffle with multiple sections. A blues guitar rite of passage." },
+  { title: "Ain't No Love in the Heart of the City", artist: "Warren Haynes", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "Am", note: "Soulful slow blues with soaring lead work. Great for emotional expression." },
+  { title: "Damn Right I Got the Blues", artist: "Buddy Guy", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "G", note: "Modern blues with attitude. Buddy Guy's raw, aggressive style on full display." },
+
+  // Folk/Acoustic
+  { title: "Blowin' in the Wind", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Three chords and timeless lyrics. Perfect first folk song to learn." },
+  { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Four simple chords with infinite cover potential. A true classic." },
+  { title: "Don't Think Twice, It's All Right", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", note: "Travis picking classic. One of the best songs for learning fingerpicking patterns." },
+  { title: "Tangled Up in Blue", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "A", note: "Open tuning masterclass with a narrative drive. Great strumming workout." },
+  { title: "The Sound of Silence", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", note: "Haunting arpeggios with simple chord shapes. Beautiful and accessible." },
+  { title: "Scarborough Fair", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", note: "Modal folk classic with fingerpicking. Teaches Dorian mode naturally." },
+  { title: "The Boxer", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", note: "Fingerpicking and strumming dynamics. The lie-la-lie section is pure joy." },
+  { title: "Heart of Gold", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Em", note: "Harmonica intro with simple strumming. The perfect campfire song." },
+  { title: "Old Man", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", note: "Banjo-influenced intro on guitar. Beautiful open-string voicings." },
+  { title: "Harvest Moon", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Gentle waltz feel with simple chords. Romantic and easy to play." },
+  { title: "Needle and the Damage Done", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", note: "Live acoustic classic with hammer-ons and pull-offs over simple changes." },
+  { title: "Wild World", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", note: "Great chord transitions practice with a memorable melody line." },
+  { title: "Peace Train", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "C", note: "Uplifting strumming pattern with a driving rhythm. Feel-good playing." },
+  { title: "Father and Son", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", note: "Dynamic song that shifts between gentle picking and powerful strumming." },
+  { title: "Suite: Judy Blue Eyes", artist: "Crosby, Stills & Nash", genre: "Folk/Acoustic", difficulty: "Intermediate", instrument: "Acoustic", key: "E", note: "Multi-part acoustic epic. Great for learning song structure and alternate tunings." },
+  { title: "Teach Your Children", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Simple open chords with country-folk strumming. Singalong classic." },
+  { title: "Our House", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", note: "Cheerful, simple chord progression. Great for building smooth chord transitions." },
+  { title: "Big Yellow Taxi", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "E", note: "Open tuning with a bright, bouncy feel. Teaches alternate tuning basics." },
+  { title: "Both Sides Now", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", note: "Beautiful melodic chords with Joni's unique voicings. Poetic and musical." },
+  { title: "Love Story", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Capo-friendly pop-country with simple open chords. Great for sing-along practice." },
+  { title: "Teardrops on My Guitar", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Gentle arpeggio pattern with basic chords. Easy and rewarding to play." },
+  { title: "You Belong With Me", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Upbeat strumming with simple chord changes. Fun pop-country energy." },
+  { title: "The Weight", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", note: "Americana classic with walking bass line between chords. Timeless groove." },
+  { title: "The Night They Drove Old Dixie Down", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", note: "Storytelling with driving acoustic rhythm. Great chord progression to internalize." },
+
+  // R&B/Soul
+  { title: "What's Going On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", note: "Smooth chord voicings with a laid-back groove. Teaches feel over technique." },
+  { title: "Let's Get It On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Eb", note: "Silky smooth chord work. Great for learning R&B rhythm guitar feel." },
+  { title: "People Get Ready", artist: "Curtis Mayfield", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "E", note: "Gospel-influenced chord progression. Simple but deeply soulful." },
+  { title: "Ain't No Sunshine", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "Am", note: "Haunting minor key groove. The 'I know' section is unforgettable." },
+  { title: "Lean on Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "C", note: "Walking bass line with simple chords. Everyone knows this song." },
+  { title: "Use Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", note: "Funky rhythm guitar with a tight groove. Great for pocket playing." },
+  { title: "Coming Home", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Electric", key: "C", note: "Modern retro soul with clean guitar tones. Smooth and tasteful." },
+  { title: "River", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "D", note: "Gospel-tinged soul with simple but effective guitar parts." },
+  { title: "Sittin' On The Dock of the Bay", artist: "Otis Redding", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Iconic song with a relaxed feel. Simple chords that everyone recognizes." },
+
+  // Jam Band
+  { title: "Melissa", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "E", note: "Beautiful acoustic ballad with jazz-influenced chord voicings." },
+  { title: "Blue Sky", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", note: "Uplifting dual-guitar harmony. Great for learning major key lead playing." },
+  { title: "Midnight Rider", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "D", note: "Simple but compelling rhythm. One of the great southern rock grooves." },
+  { title: "Whipping Post", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "Am", note: "Epic in 11/8 time (live version). Teaches unusual time signatures and intensity." },
+  { title: "Statesboro Blues", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "D", note: "Slide guitar classic with Duane Allman's legendary tone and phrasing." },
+  { title: "Jessica (Main Riff)", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "A", note: "Instrumental classic with a joyful main riff. Great for building speed." },
+  { title: "Friend of the Devil", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Gentle folk-influenced Dead classic. Great walking bass line between chords." },
+  { title: "Ripple", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", note: "Simple, beautiful folk song. One of Garcia's finest melodies over basic chords." },
+  { title: "Scarlet Begonias", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "B", note: "Reggae-influenced groove with a memorable riff. Leads naturally into jamming." },
+  { title: "Casey Jones", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C", note: "Driving rock with country influences. Catchy riff and singable chorus." },
+  { title: "Brown Eyed Girl", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Both", key: "G", note: "Maybe the most-played song at open mics. Simple, infectious, and universal." },
+  { title: "And It Stoned Me", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "E", note: "Laid-back groove with simple chords. Great for relaxed acoustic playing." },
+  { title: "Into the Mystic", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "Eb", note: "Dreamy acoustic song with a gentle capo'd progression. Atmospheric." },
+  { title: "Moondance", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "Am", note: "Jazz-influenced with a swinging rhythm. Great for learning minor key jazz-pop." },
+
+  // Solo Practice
+  { title: "Crossroads (Cream Version)", artist: "Cream / Eric Clapton", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "A", note: "Clapton's legendary live solo. Essential blues-rock phrasing and speed." },
+  { title: "Comfortably Numb (Solo)", artist: "Pink Floyd", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", note: "Both solos are masterclasses in melodic lead guitar. Bending and vibrato essential." },
+  { title: "Hotel California (Solo)", artist: "Eagles", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", note: "Harmonized dual-guitar solo. One of the most recognizable solos in rock history." },
+  { title: "All Along the Watchtower", artist: "Jimi Hendrix", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "C#m", note: "Lead guitar throughout the entire song. Hendrix reinvented Dylan's folk song as a guitar showcase." },
+  { title: "Texas Flood", artist: "Stevie Ray Vaughan", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "G", note: "Slow blues with incredible intensity. Focus on the approachable intro phrases first." },
+  { title: "Europa", artist: "Santana", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Cm", note: "Lyrical, singing tone with Latin feel. Great for learning sustained melodic soloing." },
+];
+
+// Add UG search URLs to all songs
+SONG_DATA.forEach(s => {
+  s.url = 'https://www.ultimate-guitar.com/search.php?search_type=title&value=' + encodeURIComponent(s.title.replace(/\s*\(.*?\)\s*/g, ' ').trim() + ' ' + s.artist.split('/')[0].trim());
+});
+
+let songGenreFilter = 'All';
+let songDiffFilter = 'All';
+let songInstFilter = 'All';
+let songSearchTerm = '';
+
+function initSongsTab() {
+  const genres = ['All', 'Classic Rock', 'Blues', 'Folk/Acoustic', 'R&B/Soul', 'Jam Band', 'Solo Practice'];
+  const diffs = ['All', 'Beginner', 'Beginner-Intermediate', 'Intermediate'];
+  const insts = ['All', 'Acoustic', 'Electric', 'Both'];
+
+  const gf = document.getElementById('genreFilters');
+  genres.forEach(g => {
+    const btn = document.createElement('button');
+    btn.textContent = g === 'Folk/Acoustic' ? 'Folk' : g;
+    btn.className = g === 'All' ? 'active' : '';
+    btn.onclick = () => {
+      songGenreFilter = g;
+      gf.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSongs();
+    };
+    gf.appendChild(btn);
+  });
+
+  const df = document.getElementById('diffFilters');
+  diffs.forEach(d => {
+    const btn = document.createElement('button');
+    btn.textContent = d === 'Beginner-Intermediate' ? 'Beg-Int' : d;
+    btn.className = d === 'All' ? 'active' : '';
+    btn.onclick = () => {
+      songDiffFilter = d;
+      df.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSongs();
+    };
+    df.appendChild(btn);
+  });
+
+  const inf = document.getElementById('instFilters');
+  insts.forEach(inst => {
+    const btn = document.createElement('button');
+    btn.textContent = inst;
+    btn.className = inst === 'All' ? 'active' : '';
+    btn.onclick = () => {
+      songInstFilter = inst;
+      inf.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSongs();
+    };
+    inf.appendChild(btn);
+  });
+
+  document.getElementById('songSearch').addEventListener('input', e => {
+    songSearchTerm = e.target.value.toLowerCase();
+    renderSongs();
+  });
+}
+
+function renderSongs() {
+  const grid = document.getElementById('songsGrid');
+  let songs = SONG_DATA;
+
+  if (songGenreFilter !== 'All') songs = songs.filter(s => s.genre === songGenreFilter);
+  if (songDiffFilter !== 'All') songs = songs.filter(s => s.difficulty === songDiffFilter);
+  if (songInstFilter !== 'All') songs = songs.filter(s => s.instrument === songInstFilter);
+  if (songSearchTerm) songs = songs.filter(s =>
+    s.title.toLowerCase().includes(songSearchTerm) ||
+    s.artist.toLowerCase().includes(songSearchTerm) ||
+    s.note.toLowerCase().includes(songSearchTerm)
+  );
+
+  document.getElementById('songsCount').textContent = `Showing ${songs.length} of ${SONG_DATA.length} songs`;
+
+  grid.innerHTML = songs.map(s => `
+    <div class="song-card">
+      <div class="song-title">${s.title}</div>
+      <div class="song-artist">${s.artist}</div>
+      <div class="song-tags">
+        <span class="song-tag genre">${s.genre}</span>
+        <span class="song-tag difficulty">${s.difficulty}</span>
+        <span class="song-tag instrument">${s.instrument}</span>
+        ${s.key ? '<span class="song-tag key-tag">Key: ' + s.key + '</span>' : ''}
+      </div>
+      <div class="song-note">${s.note}</div>
+      <a class="song-link" href="${s.url}" target="_blank" rel="noopener">Open Tab</a>
+    </div>
+  `).join('');
 }
 
 // ===== INIT =====
@@ -1062,6 +1560,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.key === ' ') { e.preventDefault(); flipCard(); }
   });
 
+  initSongsTab();
   buildFCCards();
 });
 </script>
