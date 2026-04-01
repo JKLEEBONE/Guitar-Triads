@@ -166,6 +166,23 @@
   .song-card .song-link:hover { background: #c8612a; }
   .song-card .song-chords { font-family: 'Consolas', 'Courier New', monospace; font-size: 12px; color: #999; margin-top: 3px; }
   .songs-count { color: #888; font-size: 14px; margin-bottom: 8px; }
+  .song-tag.strum { background: #e8e0f0; color: #6a4a8a; }
+
+  /* Strumming Pattern Guide */
+  .strum-guide-toggle { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.15s; }
+  .strum-guide-toggle:hover { border-color: #e07030; }
+  .strum-guide-toggle h3 { color: #e07030; margin: 0; font-size: 18px; }
+  .strum-guide-toggle .arrow { font-size: 20px; color: #888; transition: transform 0.2s; }
+  .strum-guide-toggle.open .arrow { transform: rotate(180deg); }
+  .strum-guide-content { display: none; }
+  .strum-guide-content.open { display: block; }
+  .strum-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .strum-card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .strum-card h4 { color: #e07030; margin: 0 0 8px; font-size: 16px; }
+  .strum-card .strum-pattern { font-family: 'Consolas', 'Courier New', monospace; font-size: 22px; font-weight: bold; color: #333; letter-spacing: 2px; margin: 8px 0; background: #f5f5f0; padding: 10px 14px; border-radius: 6px; display: inline-block; }
+  .strum-card .strum-desc { font-size: 13px; color: #666; margin: 8px 0 6px; }
+  .strum-card .strum-songs { font-size: 12px; color: #888; }
+  .strum-card .strum-songs strong { color: #666; }
 </style>
 </head>
 <body>
@@ -302,7 +319,68 @@
     <div class="songs-filters" id="instFilters">
       <span class="filter-label">Best on:</span>
     </div>
+    <div class="songs-filters" id="strumFilters">
+      <span class="filter-label">Strum Pattern:</span>
+    </div>
   </div>
+
+  <div class="strum-guide-toggle" id="strumGuideToggle" onclick="toggleStrumGuide()">
+    <h3>Strumming Pattern Guide</h3>
+    <span class="arrow">&#9660;</span>
+  </div>
+  <div class="strum-guide-content" id="strumGuideContent">
+    <div class="strum-cards">
+      <div class="strum-card">
+        <h4>Straight Down</h4>
+        <div class="strum-pattern">D &nbsp;D &nbsp;D &nbsp;D</div>
+        <div class="strum-desc">Simple quarter note downstrokes. Good for punk and driving rock.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Seven Nation Army, Fell in Love with a Girl, Start Me Up</div>
+      </div>
+      <div class="strum-card">
+        <h4>Basic Folk/Country</h4>
+        <div class="strum-pattern">D &nbsp;D U &nbsp;U D U</div>
+        <div class="strum-desc">The most common beginner pattern. Works for tons of acoustic songs.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Knockin' on Heaven's Door, Free Fallin', Heart of Gold, Blowin' in the Wind, Wild World, Father and Son</div>
+      </div>
+      <div class="strum-card">
+        <h4>Island/Reggae Strum</h4>
+        <div class="strum-pattern">D &nbsp;D U . U D U</div>
+        <div class="strum-desc">Similar to basic folk but with a skip that gives it a bouncy feel.</div>
+        <div class="strum-songs"><strong>Songs:</strong> I Shot the Sheriff, Redemption Song, Hotel Yorba</div>
+      </div>
+      <div class="strum-card">
+        <h4>Slow Ballad</h4>
+        <div class="strum-pattern">D . . U . U D U</div>
+        <div class="strum-desc">Spacious pattern for slow songs, lets chords breathe.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Wish You Were Here, Landslide, Going to California, The Rain Song</div>
+      </div>
+      <div class="strum-card">
+        <h4>Driving Rock</h4>
+        <div class="strum-pattern">D D U D D U</div>
+        <div class="strum-desc">Harder, more rhythmic feel for rock songs.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Brown Sugar, Gimme Shelter, Wild Horses, Won't Back Down</div>
+      </div>
+      <div class="strum-card">
+        <h4>Blues Shuffle</h4>
+        <div class="strum-pattern">D.U D.U D.U D.U</div>
+        <div class="strum-desc">Shuffle/swing feel with a triplet groove. Standard 12-bar blues feel.</div>
+        <div class="strum-songs"><strong>Songs:</strong> The Thrill Is Gone, Sweet Home Chicago, Hoochie Coochie Man, Cross Road Blues</div>
+      </div>
+      <div class="strum-card">
+        <h4>16th Note Funk</h4>
+        <div class="strum-pattern">D x U x D x U D</div>
+        <div class="strum-desc">Tight, percussive strumming for funk and R&B.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Use Me, Let's Get It On, Ain't No Sunshine</div>
+      </div>
+      <div class="strum-card">
+        <h4>Fingerpicking Arpeggio</h4>
+        <div class="strum-pattern">T 1 2 3 2 1</div>
+        <div class="strum-desc">Not a strum but a picking pattern (T=thumb, 1-3=fingers). For fingerpicked songs.</div>
+        <div class="strum-songs"><strong>Songs:</strong> Dust in the Wind, Scarborough Fair, The Boxer, Landslide, Babe I'm Gonna Leave You</div>
+      </div>
+    </div>
+  </div>
+
   <div class="songs-count" id="songsCount"></div>
   <div class="songs-grid" id="songsGrid"></div>
 </div>
@@ -1354,135 +1432,135 @@ function renderCofInfo() {
 // ===== SONGS TAB =====
 const SONG_DATA = [
   // Classic Rock - Led Zeppelin
-  { title: "Stairway to Heaven (Intro)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - G#+ - C/G# - D/F# - Fmaj7 - G/B - Am", note: "Iconic fingerpicked intro. Great for building fingerpicking independence and arpeggios." },
-  { title: "Over the Hills and Far Away", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - Dsus4 - D - G - A", note: "Beautiful acoustic intro with hammer-ons. Great picking exercise that sounds impressive." },
-  { title: "Going to California", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - G - D - A - G", note: "Open tuning folk-influenced piece. Gentle fingerpicking with a sing-along melody." },
-  { title: "Babe I'm Gonna Leave You", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - C/G - D/F# - F - E", note: "Dynamic arpeggiated intro builds to powerful strumming. Teaches dynamics and control." },
-  { title: "The Rain Song", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "G", chords: "Gsus4 - G - Cmaj7 - G", note: "Beautiful chord voicings and gentle dynamics. Great for learning extended chords." },
-  { title: "Black Dog (Riff)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A5 - riff-based", note: "Iconic syncopated riff. Great for rhythmic precision and feel." },
+  { title: "Stairway to Heaven (Intro)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - G#+ - C/G# - D/F# - Fmaj7 - G/B - Am", note: "Iconic fingerpicked intro. Great for building fingerpicking independence and arpeggios.", strumPattern: "Fingerpicking" },
+  { title: "Over the Hills and Far Away", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - Dsus4 - D - G - A", note: "Beautiful acoustic intro with hammer-ons. Great picking exercise that sounds impressive.", strumPattern: "Fingerpicking" },
+  { title: "Going to California", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - G - D - A - G", note: "Open tuning folk-influenced piece. Gentle fingerpicking with a sing-along melody.", strumPattern: "Slow Ballad" },
+  { title: "Babe I'm Gonna Leave You", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - C/G - D/F# - F - E", note: "Dynamic arpeggiated intro builds to powerful strumming. Teaches dynamics and control.", strumPattern: "Fingerpicking" },
+  { title: "The Rain Song", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Acoustic", key: "G", chords: "Gsus4 - G - Cmaj7 - G", note: "Beautiful chord voicings and gentle dynamics. Great for learning extended chords.", strumPattern: "Slow Ballad" },
+  { title: "Black Dog (Riff)", artist: "Led Zeppelin", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A5 - riff-based", note: "Iconic syncopated riff. Great for rhythmic precision and feel.", strumPattern: "Varies" },
 
   // Classic Rock - Hendrix
-  { title: "Hey Joe", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "C - G - D - A - E", note: "Classic chord progression with embellishments. Foundation for Hendrix-style rhythm playing." },
-  { title: "Little Wing", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Em", chords: "Em - G - Am - Em - Bm - Am - C - G - F - C - D", note: "Chord-melody masterpiece. Teaches Hendrix chord embellishment style with double stops." },
-  { title: "The Wind Cries Mary", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "F", chords: "Eb - E - F - Eb - E - F - Bb - Ab - Db - F", note: "Smooth chord movement with signature Hendrix fills between changes." },
-  { title: "Voodoo Child (Slight Return)", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E7#9 riff-based", note: "Wah-drenched blues-rock masterclass. The opening riff alone is worth learning." },
+  { title: "Hey Joe", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "C - G - D - A - E", note: "Classic chord progression with embellishments. Foundation for Hendrix-style rhythm playing.", strumPattern: "Basic Folk" },
+  { title: "Little Wing", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Em", chords: "Em - G - Am - Em - Bm - Am - C - G - F - C - D", note: "Chord-melody masterpiece. Teaches Hendrix chord embellishment style with double stops.", strumPattern: "Varies" },
+  { title: "The Wind Cries Mary", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "F", chords: "Eb - E - F - Eb - E - F - Bb - Ab - Db - F", note: "Smooth chord movement with signature Hendrix fills between changes.", strumPattern: "Slow Ballad" },
+  { title: "Voodoo Child (Slight Return)", artist: "Jimi Hendrix", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E7#9 riff-based", note: "Wah-drenched blues-rock masterclass. The opening riff alone is worth learning.", strumPattern: "Varies" },
 
   // Classic Rock - Eric Clapton
-  { title: "I Shot the Sheriff (Live)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Gm", chords: "Gm - Cm - Eb - Dm - Gm", note: "Reggae-influenced rhythm with great solo opportunities. Fun groove to play." },
-  { title: "Wonderful Tonight", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "G", chords: "G - D - C - D - G", note: "Simple chord progression with a memorable intro lead line. Perfect beginner song." },
-  { title: "Layla (Unplugged)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Dm", chords: "Dm - Bb - C - Dm", note: "Acoustic reimagining with beautiful fingerpicking and slide work." },
-  { title: "Cocaine", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - D - E - D - B", note: "Classic blues-rock riff based on a simple but powerful E blues pattern." },
-  { title: "Before You Accuse Me", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - E - B7 - A - E", note: "Shuffle blues standard. Great for learning 12-bar blues rhythm guitar." },
+  { title: "I Shot the Sheriff (Live)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Gm", chords: "Gm - Cm - Eb - Dm - Gm", note: "Reggae-influenced rhythm with great solo opportunities. Fun groove to play.", strumPattern: "Island/Reggae" },
+  { title: "Wonderful Tonight", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "G", chords: "G - D - C - D - G", note: "Simple chord progression with a memorable intro lead line. Perfect beginner song.", strumPattern: "Slow Ballad" },
+  { title: "Layla (Unplugged)", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Dm", chords: "Dm - Bb - C - Dm", note: "Acoustic reimagining with beautiful fingerpicking and slide work.", strumPattern: "Fingerpicking" },
+  { title: "Cocaine", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - D - E - D - B", note: "Classic blues-rock riff based on a simple but powerful E blues pattern.", strumPattern: "Driving Rock" },
+  { title: "Before You Accuse Me", artist: "Eric Clapton", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - E - B7 - A - E", note: "Shuffle blues standard. Great for learning 12-bar blues rhythm guitar.", strumPattern: "Blues Shuffle" },
 
   // Classic Rock - Tom Petty
-  { title: "Free Fallin'", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "F", chords: "D - Dsus4 - D - Asus4", note: "Three chords and pure joy. One of the best campfire songs ever written." },
-  { title: "Learning to Fly", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "F", chords: "F - C - Am - G", note: "Simple, uplifting chord progression. Great for building confidence with open chords." },
-  { title: "Won't Back Down", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "Em", chords: "Em - D - G - Em - D - G - C", note: "Driving rhythm with basic chords. An anthem that's accessible to new players." },
-  { title: "American Girl", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "D", chords: "D - E - G - A", note: "Jangly open-string riff with a driving rhythm. Great for building right-hand speed." },
+  { title: "Free Fallin'", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "F", chords: "D - Dsus4 - D - Asus4", note: "Three chords and pure joy. One of the best campfire songs ever written.", strumPattern: "Basic Folk" },
+  { title: "Learning to Fly", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "F", chords: "F - C - Am - G", note: "Simple, uplifting chord progression. Great for building confidence with open chords.", strumPattern: "Basic Folk" },
+  { title: "Won't Back Down", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner", instrument: "Both", key: "Em", chords: "Em - D - G - Em - D - G - C", note: "Driving rhythm with basic chords. An anthem that's accessible to new players.", strumPattern: "Driving Rock" },
+  { title: "American Girl", artist: "Tom Petty", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "D", chords: "D - E - G - A", note: "Jangly open-string riff with a driving rhythm. Great for building right-hand speed.", strumPattern: "Driving Rock" },
 
   // Classic Rock - Dire Straits
-  { title: "Sultans of Swing", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Dm", chords: "Dm - C - Bb - A", note: "Mark Knopfler's fingerstyle electric masterpiece. Clean tone, incredible phrasing." },
-  { title: "Romeo and Juliet", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "F", chords: "F - C - Dm - Bb - F", note: "Beautiful fingerpicked intro with a storytelling quality. Emotional dynamics." },
+  { title: "Sultans of Swing", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Dm", chords: "Dm - C - Bb - A", note: "Mark Knopfler's fingerstyle electric masterpiece. Clean tone, incredible phrasing.", strumPattern: "Fingerpicking" },
+  { title: "Romeo and Juliet", artist: "Dire Straits", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Both", key: "F", chords: "F - C - Dm - Bb - F", note: "Beautiful fingerpicked intro with a storytelling quality. Emotional dynamics.", strumPattern: "Fingerpicking" },
 
   // Classic Rock - Rolling Stones
-  { title: "Wild Horses", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - Am - G - Bm - G", note: "Open chord ballad with a beautiful melody. Classic acoustic strumming song." },
-  { title: "Start Me Up", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", chords: "G - C - G riff-based", note: "Keith Richards open-G tuning classic. Iconic riff that defines rock rhythm guitar." },
-  { title: "Brown Sugar", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", chords: "G - C - Eb - Ab - Bb - G", note: "Driving riff with open-G tuning swagger. Pure rock and roll energy." },
-  { title: "Gimme Shelter", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "C#", chords: "C#m - B - A - B - C#m", note: "Haunting intro with tremolo effect. Teaches dynamics and atmosphere in playing." },
+  { title: "Wild Horses", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - Am - G - Bm - G", note: "Open chord ballad with a beautiful melody. Classic acoustic strumming song.", strumPattern: "Driving Rock" },
+  { title: "Start Me Up", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", chords: "G - C - G riff-based", note: "Keith Richards open-G tuning classic. Iconic riff that defines rock rhythm guitar.", strumPattern: "Straight Down" },
+  { title: "Brown Sugar", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "G", chords: "G - C - Eb - Ab - Bb - G", note: "Driving riff with open-G tuning swagger. Pure rock and roll energy.", strumPattern: "Driving Rock" },
+  { title: "Gimme Shelter", artist: "Rolling Stones", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "C#", chords: "C#m - B - A - B - C#m", note: "Haunting intro with tremolo effect. Teaches dynamics and atmosphere in playing.", strumPattern: "Driving Rock" },
 
   // Classic Rock - Pink Floyd
-  { title: "Comfortably Numb", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - Em - Bm - D - A", note: "Two of the greatest guitar solos ever. The chord progression is deceptively simple." },
-  { title: "Wish You Were Here", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "Em", chords: "Em - G - Em - G - A - Em - A - G", note: "Iconic 12-string intro and simple chords. A must-learn for any guitarist." },
-  { title: "Time (Solo)", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "F#m", chords: "F#m - A - E - F#m - D - A - E - F#m", note: "Melodic solo showcasing Gilmour's bending and vibrato. Emotional and technical." },
+  { title: "Comfortably Numb", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - Em - Bm - D - A", note: "Two of the greatest guitar solos ever. The chord progression is deceptively simple.", strumPattern: "Slow Ballad" },
+  { title: "Wish You Were Here", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Beginner", instrument: "Acoustic", key: "Em", chords: "Em - G - Em - G - A - Em - A - G", note: "Iconic 12-string intro and simple chords. A must-learn for any guitarist.", strumPattern: "Slow Ballad" },
+  { title: "Time (Solo)", artist: "Pink Floyd", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "F#m", chords: "F#m - A - E - F#m - D - A - E - F#m", note: "Melodic solo showcasing Gilmour's bending and vibrato. Emotional and technical.", strumPattern: "Varies" },
 
   // Classic Rock - Fleetwood Mac
-  { title: "Landslide", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - G/B - Am - G/B - C", note: "Travis picking pattern with simple chords. Beautiful and meditative to practice." },
-  { title: "The Chain", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Em", chords: "Em - Am - Em - C - Em", note: "Famous bass-driven breakdown and building intensity. Great ensemble piece." },
-  { title: "Oh Well", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Both", key: "Em", chords: "Em - riff-based", note: "Peter Green's acoustic-to-electric showcase. Fingerpicked intro is a classic exercise." },
+  { title: "Landslide", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - G/B - Am - G/B - C", note: "Travis picking pattern with simple chords. Beautiful and meditative to practice.", strumPattern: "Fingerpicking" },
+  { title: "The Chain", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Em", chords: "Em - Am - Em - C - Em", note: "Famous bass-driven breakdown and building intensity. Great ensemble piece.", strumPattern: "Driving Rock" },
+  { title: "Oh Well", artist: "Fleetwood Mac", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Both", key: "Em", chords: "Em - riff-based", note: "Peter Green's acoustic-to-electric showcase. Fingerpicked intro is a classic exercise.", strumPattern: "Varies" },
 
   // Blues
-  { title: "The Thrill Is Gone", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - Em - Bm - F#7 - Bm", note: "The quintessential blues guitar song. Learn B.B.'s vibrato and phrasing style." },
-  { title: "Every Day I Have the Blues", artist: "B.B. King", genre: "Blues", difficulty: "Beginner", instrument: "Electric", key: "Bb", chords: "Bb - Eb - Bb - F - Eb - Bb", note: "Upbeat shuffle blues. Great for learning basic blues rhythm and lead patterns." },
-  { title: "Rock Me Baby", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bb", chords: "Bb - Eb - Bb - F - Eb - Bb", note: "Classic slow blues groove with room for expressive soloing and bends." },
-  { title: "Cross Road Blues", artist: "Robert Johnson", genre: "Blues", difficulty: "Intermediate", instrument: "Acoustic", key: "A", chords: "A - D - A - E - D - A", note: "Foundation of blues guitar. Open-position slide and fingerpicking patterns." },
-  { title: "Sweet Home Chicago", artist: "Robert Johnson", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - E - B7 - A - E", note: "12-bar blues standard everyone should know. Great for jam sessions." },
-  { title: "Hoochie Coochie Man", artist: "Muddy Waters", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "A", chords: "A7 - D7 - A7 - E7 - D7 - A7", note: "Stop-time blues riff that defines Chicago blues. Power and swagger." },
-  { title: "Born Under a Bad Sign", artist: "Albert King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C#m", chords: "C#m - G#7 - F#7 - C#m", note: "Iconic blues-funk riff. Albert King's bending style is essential learning." },
-  { title: "Hide Away", artist: "Freddie King", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E - A - E - B7 - A - E", note: "Instrumental blues shuffle with multiple sections. A blues guitar rite of passage." },
-  { title: "Ain't No Love in the Heart of the City", artist: "Warren Haynes", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "Am - Dm - Am - E7 - Am", note: "Soulful slow blues with soaring lead work. Great for emotional expression." },
-  { title: "Damn Right I Got the Blues", artist: "Buddy Guy", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "G", chords: "G - C - G - D - C - G", note: "Modern blues with attitude. Buddy Guy's raw, aggressive style on full display." },
+  { title: "The Thrill Is Gone", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - Em - Bm - F#7 - Bm", note: "The quintessential blues guitar song. Learn B.B.'s vibrato and phrasing style.", strumPattern: "Blues Shuffle" },
+  { title: "Every Day I Have the Blues", artist: "B.B. King", genre: "Blues", difficulty: "Beginner", instrument: "Electric", key: "Bb", chords: "Bb - Eb - Bb - F - Eb - Bb", note: "Upbeat shuffle blues. Great for learning basic blues rhythm and lead patterns.", strumPattern: "Blues Shuffle" },
+  { title: "Rock Me Baby", artist: "B.B. King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Bb", chords: "Bb - Eb - Bb - F - Eb - Bb", note: "Classic slow blues groove with room for expressive soloing and bends.", strumPattern: "Blues Shuffle" },
+  { title: "Cross Road Blues", artist: "Robert Johnson", genre: "Blues", difficulty: "Intermediate", instrument: "Acoustic", key: "A", chords: "A - D - A - E - D - A", note: "Foundation of blues guitar. Open-position slide and fingerpicking patterns.", strumPattern: "Blues Shuffle" },
+  { title: "Sweet Home Chicago", artist: "Robert Johnson", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - E - B7 - A - E", note: "12-bar blues standard everyone should know. Great for jam sessions.", strumPattern: "Blues Shuffle" },
+  { title: "Hoochie Coochie Man", artist: "Muddy Waters", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "A", chords: "A7 - D7 - A7 - E7 - D7 - A7", note: "Stop-time blues riff that defines Chicago blues. Power and swagger.", strumPattern: "Blues Shuffle" },
+  { title: "Born Under a Bad Sign", artist: "Albert King", genre: "Blues", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C#m", chords: "C#m - G#7 - F#7 - C#m", note: "Iconic blues-funk riff. Albert King's bending style is essential learning.", strumPattern: "Blues Shuffle" },
+  { title: "Hide Away", artist: "Freddie King", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E - A - E - B7 - A - E", note: "Instrumental blues shuffle with multiple sections. A blues guitar rite of passage.", strumPattern: "Blues Shuffle" },
+  { title: "Ain't No Love in the Heart of the City", artist: "Warren Haynes", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "Am - Dm - Am - E7 - Am", note: "Soulful slow blues with soaring lead work. Great for emotional expression.", strumPattern: "Slow Ballad" },
+  { title: "Damn Right I Got the Blues", artist: "Buddy Guy", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "G", chords: "G - C - G - D - C - G", note: "Modern blues with attitude. Buddy Guy's raw, aggressive style on full display.", strumPattern: "Blues Shuffle" },
 
   // Folk/Acoustic
-  { title: "Blowin' in the Wind", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - D - A - D", note: "Three chords and timeless lyrics. Perfect first folk song to learn." },
-  { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - D - Am - G - D - C", note: "Four simple chords with infinite cover potential. A true classic." },
-  { title: "Don't Think Twice, It's All Right", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - G - Am - F - C - G - C", note: "Travis picking classic. One of the best songs for learning fingerpicking patterns." },
-  { title: "Tangled Up in Blue", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "A", chords: "A - Asus4 - A - G - D - A", note: "Open tuning masterclass with a narrative drive. Great strumming workout." },
-  { title: "The Sound of Silence", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", chords: "Am - G - Am - F - C - G - Am", note: "Haunting arpeggios with simple chord shapes. Beautiful and accessible." },
-  { title: "Scarborough Fair", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - G - Am - C - Am - D - Am", note: "Modal folk classic with fingerpicking. Teaches Dorian mode naturally." },
-  { title: "The Boxer", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - Am - G - F - C", note: "Fingerpicking and strumming dynamics. The lie-la-lie section is pure joy." },
-  { title: "Heart of Gold", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Em", chords: "Em - C - D - G", note: "Harmonica intro with simple strumming. The perfect campfire song." },
-  { title: "Old Man", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "Dm - D - F - C - G - Dm", note: "Banjo-influenced intro on guitar. Beautiful open-string voicings." },
-  { title: "Harvest Moon", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Em - D - A - D", note: "Gentle waltz feel with simple chords. Romantic and easy to play." },
-  { title: "Needle and the Damage Done", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - C - E - D", note: "Live acoustic classic with hammer-ons and pull-offs over simple changes." },
-  { title: "Wild World", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", chords: "Am - D - G - C - F - Dm - E", note: "Great chord transitions practice with a memorable melody line." },
-  { title: "Peace Train", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "C", chords: "C - G - Am - E - F - C - G", note: "Uplifting strumming pattern with a driving rhythm. Feel-good playing." },
-  { title: "Father and Son", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", chords: "G - D - C - Am - G - Em - D - C", note: "Dynamic song that shifts between gentle picking and powerful strumming." },
-  { title: "Suite: Judy Blue Eyes", artist: "Crosby, Stills & Nash", genre: "Folk/Acoustic", difficulty: "Intermediate", instrument: "Acoustic", key: "E", chords: "E - D - A - E", note: "Multi-part acoustic epic. Great for learning song structure and alternate tunings." },
-  { title: "Teach Your Children", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - D - A", note: "Simple open chords with country-folk strumming. Singalong classic." },
-  { title: "Our House", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", chords: "A - D - A - E - A", note: "Cheerful, simple chord progression. Great for building smooth chord transitions." },
-  { title: "Big Yellow Taxi", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "E", chords: "E - A - B - E", note: "Open tuning with a bright, bouncy feel. Teaches alternate tuning basics." },
-  { title: "Both Sides Now", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", chords: "G - C - G - D - C - G", note: "Beautiful melodic chords with Joni's unique voicings. Poetic and musical." },
-  { title: "Love Story", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Bm - G - A", note: "Capo-friendly pop-country with simple open chords. Great for sing-along practice." },
-  { title: "Teardrops on My Guitar", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - Em - C - D", note: "Gentle arpeggio pattern with basic chords. Easy and rewarding to play." },
-  { title: "You Belong With Me", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - A - Em - G", note: "Upbeat strumming with simple chord changes. Fun pop-country energy." },
-  { title: "The Weight", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", chords: "A - C#m - D - A - E", note: "Americana classic with walking bass line between chords. Timeless groove." },
-  { title: "The Night They Drove Old Dixie Down", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - F - C - Am - Dm - Am", note: "Storytelling with driving acoustic rhythm. Great chord progression to internalize." },
+  { title: "Blowin' in the Wind", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - D - A - D", note: "Three chords and timeless lyrics. Perfect first folk song to learn.", strumPattern: "Basic Folk" },
+  { title: "Knockin' on Heaven's Door", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - D - Am - G - D - C", note: "Four simple chords with infinite cover potential. A true classic.", strumPattern: "Basic Folk" },
+  { title: "Don't Think Twice, It's All Right", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - G - Am - F - C - G - C", note: "Travis picking classic. One of the best songs for learning fingerpicking patterns.", strumPattern: "Fingerpicking" },
+  { title: "Tangled Up in Blue", artist: "Bob Dylan", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "A", chords: "A - Asus4 - A - G - D - A", note: "Open tuning masterclass with a narrative drive. Great strumming workout.", strumPattern: "Basic Folk" },
+  { title: "The Sound of Silence", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", chords: "Am - G - Am - F - C - G - Am", note: "Haunting arpeggios with simple chord shapes. Beautiful and accessible.", strumPattern: "Fingerpicking" },
+  { title: "Scarborough Fair", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - G - Am - C - Am - D - Am", note: "Modal folk classic with fingerpicking. Teaches Dorian mode naturally.", strumPattern: "Fingerpicking" },
+  { title: "The Boxer", artist: "Simon & Garfunkel", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "C", chords: "C - Am - G - F - C", note: "Fingerpicking and strumming dynamics. The lie-la-lie section is pure joy.", strumPattern: "Fingerpicking" },
+  { title: "Heart of Gold", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Em", chords: "Em - C - D - G", note: "Harmonica intro with simple strumming. The perfect campfire song.", strumPattern: "Basic Folk" },
+  { title: "Old Man", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "Dm - D - F - C - G - Dm", note: "Banjo-influenced intro on guitar. Beautiful open-string voicings.", strumPattern: "Fingerpicking" },
+  { title: "Harvest Moon", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Em - D - A - D", note: "Gentle waltz feel with simple chords. Romantic and easy to play.", strumPattern: "Slow Ballad" },
+  { title: "Needle and the Damage Done", artist: "Neil Young", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "D", chords: "D - C - E - D", note: "Live acoustic classic with hammer-ons and pull-offs over simple changes.", strumPattern: "Fingerpicking" },
+  { title: "Wild World", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "Am", chords: "Am - D - G - C - F - Dm - E", note: "Great chord transitions practice with a memorable melody line.", strumPattern: "Basic Folk" },
+  { title: "Peace Train", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "C", chords: "C - G - Am - E - F - C - G", note: "Uplifting strumming pattern with a driving rhythm. Feel-good playing.", strumPattern: "Basic Folk" },
+  { title: "Father and Son", artist: "Cat Stevens", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", chords: "G - D - C - Am - G - Em - D - C", note: "Dynamic song that shifts between gentle picking and powerful strumming.", strumPattern: "Basic Folk" },
+  { title: "Suite: Judy Blue Eyes", artist: "Crosby, Stills & Nash", genre: "Folk/Acoustic", difficulty: "Intermediate", instrument: "Acoustic", key: "E", chords: "E - D - A - E", note: "Multi-part acoustic epic. Great for learning song structure and alternate tunings.", strumPattern: "Varies" },
+  { title: "Teach Your Children", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - D - A", note: "Simple open chords with country-folk strumming. Singalong classic.", strumPattern: "Basic Folk" },
+  { title: "Our House", artist: "Crosby, Stills, Nash & Young", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", chords: "A - D - A - E - A", note: "Cheerful, simple chord progression. Great for building smooth chord transitions.", strumPattern: "Basic Folk" },
+  { title: "Big Yellow Taxi", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "E", chords: "E - A - B - E", note: "Open tuning with a bright, bouncy feel. Teaches alternate tuning basics.", strumPattern: "Island/Reggae" },
+  { title: "Both Sides Now", artist: "Joni Mitchell", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "G", chords: "G - C - G - D - C - G", note: "Beautiful melodic chords with Joni's unique voicings. Poetic and musical.", strumPattern: "Slow Ballad" },
+  { title: "Love Story", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Bm - G - A", note: "Capo-friendly pop-country with simple open chords. Great for sing-along practice.", strumPattern: "Basic Folk" },
+  { title: "Teardrops on My Guitar", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - Em - C - D", note: "Gentle arpeggio pattern with basic chords. Easy and rewarding to play.", strumPattern: "Fingerpicking" },
+  { title: "You Belong With Me", artist: "Taylor Swift", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - A - Em - G", note: "Upbeat strumming with simple chord changes. Fun pop-country energy.", strumPattern: "Basic Folk" },
+  { title: "The Weight", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner", instrument: "Acoustic", key: "A", chords: "A - C#m - D - A - E", note: "Americana classic with walking bass line between chords. Timeless groove.", strumPattern: "Basic Folk" },
+  { title: "The Night They Drove Old Dixie Down", artist: "The Band", genre: "Folk/Acoustic", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "Am", chords: "Am - F - C - Am - Dm - Am", note: "Storytelling with driving acoustic rhythm. Great chord progression to internalize.", strumPattern: "Driving Rock" },
 
   // R&B/Soul
-  { title: "What's Going On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "Emaj7 - C#m7 - Emaj7 - C#m7", note: "Smooth chord voicings with a laid-back groove. Teaches feel over technique." },
-  { title: "Let's Get It On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Eb", chords: "Eb - Gm - Ab - Bb", note: "Silky smooth chord work. Great for learning R&B rhythm guitar feel." },
-  { title: "People Get Ready", artist: "Curtis Mayfield", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "E", chords: "E - C#m - A - B - E", note: "Gospel-influenced chord progression. Simple but deeply soulful." },
-  { title: "Ain't No Sunshine", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "Am", chords: "Am - Em - G - Am", note: "Haunting minor key groove. The 'I know' section is unforgettable." },
-  { title: "Lean on Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "C", chords: "C - Dm - Em - F - G - C", note: "Walking bass line with simple chords. Everyone knows this song." },
-  { title: "Use Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - A - E - A", note: "Funky rhythm guitar with a tight groove. Great for pocket playing." },
-  { title: "Coming Home", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Electric", key: "C", chords: "C - Am - F - G", note: "Modern retro soul with clean guitar tones. Smooth and tasteful." },
-  { title: "River", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "D", chords: "D - Bm - G - A", note: "Gospel-tinged soul with simple but effective guitar parts." },
-  { title: "Sittin' On The Dock of the Bay", artist: "Otis Redding", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - B - C - A", note: "Iconic song with a relaxed feel. Simple chords that everyone recognizes." },
+  { title: "What's Going On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "Emaj7 - C#m7 - Emaj7 - C#m7", note: "Smooth chord voicings with a laid-back groove. Teaches feel over technique.", strumPattern: "16th Note Funk" },
+  { title: "Let's Get It On", artist: "Marvin Gaye", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "Eb", chords: "Eb - Gm - Ab - Bb", note: "Silky smooth chord work. Great for learning R&B rhythm guitar feel.", strumPattern: "16th Note Funk" },
+  { title: "People Get Ready", artist: "Curtis Mayfield", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "E", chords: "E - C#m - A - B - E", note: "Gospel-influenced chord progression. Simple but deeply soulful.", strumPattern: "Basic Folk" },
+  { title: "Ain't No Sunshine", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "Am", chords: "Am - Em - G - Am", note: "Haunting minor key groove. The 'I know' section is unforgettable.", strumPattern: "16th Note Funk" },
+  { title: "Lean on Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "C", chords: "C - Dm - Em - F - G - C", note: "Walking bass line with simple chords. Everyone knows this song.", strumPattern: "Basic Folk" },
+  { title: "Use Me", artist: "Bill Withers", genre: "R&B/Soul", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - A - E - A", note: "Funky rhythm guitar with a tight groove. Great for pocket playing.", strumPattern: "16th Note Funk" },
+  { title: "Coming Home", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Electric", key: "C", chords: "C - Am - F - G", note: "Modern retro soul with clean guitar tones. Smooth and tasteful.", strumPattern: "Basic Folk" },
+  { title: "River", artist: "Leon Bridges", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Both", key: "D", chords: "D - Bm - G - A", note: "Gospel-tinged soul with simple but effective guitar parts.", strumPattern: "Slow Ballad" },
+  { title: "Sittin' On The Dock of the Bay", artist: "Otis Redding", genre: "R&B/Soul", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - B - C - A", note: "Iconic song with a relaxed feel. Simple chords that everyone recognizes.", strumPattern: "Basic Folk" },
 
   // Jam Band
-  { title: "Melissa", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "E", chords: "E - F#m - Emaj7 - A - Bm", note: "Beautiful acoustic ballad with jazz-influenced chord voicings." },
-  { title: "Blue Sky", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - B - E", note: "Uplifting dual-guitar harmony. Great for learning major key lead playing." },
-  { title: "Midnight Rider", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Gm - D - C", note: "Simple but compelling rhythm. One of the great southern rock grooves." },
-  { title: "Whipping Post", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "A - Bm - C - Bm - Am", note: "Epic in 11/8 time (live version). Teaches unusual time signatures and intensity." },
-  { title: "Statesboro Blues", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "D", chords: "D - G - D - A - G - D", note: "Slide guitar classic with Duane Allman's legendary tone and phrasing." },
-  { title: "Jessica (Main Riff)", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A - D - G - A - D - E", note: "Instrumental classic with a joyful main riff. Great for building speed." },
-  { title: "Friend of the Devil", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - D", note: "Gentle folk-influenced Dead classic. Great walking bass line between chords." },
-  { title: "Ripple", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - G - D - G", note: "Simple, beautiful folk song. One of Garcia's finest melodies over basic chords." },
-  { title: "Scarlet Begonias", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "B", chords: "B - E - B - F# - E", note: "Reggae-influenced groove with a memorable riff. Leads naturally into jamming." },
-  { title: "Casey Jones", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C", chords: "C - F - G - C", note: "Driving rock with country influences. Catchy riff and singable chorus." },
-  { title: "Brown Eyed Girl", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Both", key: "G", chords: "G - C - G - D", note: "Maybe the most-played song at open mics. Simple, infectious, and universal." },
-  { title: "And It Stoned Me", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "E", chords: "E - A - E - A - B", note: "Laid-back groove with simple chords. Great for relaxed acoustic playing." },
-  { title: "Into the Mystic", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "Eb", chords: "Eb - Cm - Ab - Bb - Eb", note: "Dreamy acoustic song with a gentle capo'd progression. Atmospheric." },
-  { title: "Moondance", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "Am", chords: "Am - Bm - Am - Dm - Am - E - Am", note: "Jazz-influenced with a swinging rhythm. Great for learning minor key jazz-pop." },
+  { title: "Melissa", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Acoustic", key: "E", chords: "E - F#m - Emaj7 - A - Bm", note: "Beautiful acoustic ballad with jazz-influenced chord voicings.", strumPattern: "Slow Ballad" },
+  { title: "Blue Sky", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "E", chords: "E - A - B - E", note: "Uplifting dual-guitar harmony. Great for learning major key lead playing.", strumPattern: "Basic Folk" },
+  { title: "Midnight Rider", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - Gm - D - C", note: "Simple but compelling rhythm. One of the great southern rock grooves.", strumPattern: "Driving Rock" },
+  { title: "Whipping Post", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "A - Bm - C - Bm - Am", note: "Epic in 11/8 time (live version). Teaches unusual time signatures and intensity.", strumPattern: "Varies" },
+  { title: "Statesboro Blues", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "D", chords: "D - G - D - A - G - D", note: "Slide guitar classic with Duane Allman's legendary tone and phrasing.", strumPattern: "Blues Shuffle" },
+  { title: "Jessica (Main Riff)", artist: "Allman Brothers", genre: "Jam Band", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A - D - G - A - D - E", note: "Instrumental classic with a joyful main riff. Great for building speed.", strumPattern: "Varies" },
+  { title: "Friend of the Devil", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - D", note: "Gentle folk-influenced Dead classic. Great walking bass line between chords.", strumPattern: "Basic Folk" },
+  { title: "Ripple", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - G - D - G", note: "Simple, beautiful folk song. One of Garcia's finest melodies over basic chords.", strumPattern: "Basic Folk" },
+  { title: "Scarlet Begonias", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "B", chords: "B - E - B - F# - E", note: "Reggae-influenced groove with a memorable riff. Leads naturally into jamming.", strumPattern: "Island/Reggae" },
+  { title: "Casey Jones", artist: "Grateful Dead", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "C", chords: "C - F - G - C", note: "Driving rock with country influences. Catchy riff and singable chorus.", strumPattern: "Driving Rock" },
+  { title: "Brown Eyed Girl", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Both", key: "G", chords: "G - C - G - D", note: "Maybe the most-played song at open mics. Simple, infectious, and universal.", strumPattern: "Basic Folk" },
+  { title: "And It Stoned Me", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "E", chords: "E - A - E - A - B", note: "Laid-back groove with simple chords. Great for relaxed acoustic playing.", strumPattern: "Basic Folk" },
+  { title: "Into the Mystic", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner", instrument: "Acoustic", key: "Eb", chords: "Eb - Cm - Ab - Bb - Eb", note: "Dreamy acoustic song with a gentle capo'd progression. Atmospheric.", strumPattern: "Slow Ballad" },
+  { title: "Moondance", artist: "Van Morrison", genre: "Jam Band", difficulty: "Beginner-Intermediate", instrument: "Both", key: "Am", chords: "Am - Bm - Am - Dm - Am - E - Am", note: "Jazz-influenced with a swinging rhythm. Great for learning minor key jazz-pop.", strumPattern: "Varies" },
 
   // Solo Practice
-  { title: "Crossroads (Cream Version)", artist: "Cream / Eric Clapton", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A - D - A - E - D - A", note: "Clapton's legendary live solo. Essential blues-rock phrasing and speed." },
-  { title: "Comfortably Numb (Solo)", artist: "Pink Floyd", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - Em - Bm - D - A", note: "Both solos are masterclasses in melodic lead guitar. Bending and vibrato essential." },
-  { title: "Hotel California (Solo)", artist: "Eagles", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - F# - A - E - G - D - Em - F#", note: "Harmonized dual-guitar solo. One of the most recognizable solos in rock history." },
-  { title: "All Along the Watchtower", artist: "Jimi Hendrix", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "C#m", chords: "C#m - B - A - B - C#m", note: "Lead guitar throughout the entire song. Hendrix reinvented Dylan's folk song as a guitar showcase." },
-  { title: "Texas Flood", artist: "Stevie Ray Vaughan", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "G", chords: "G - C - G - D - C - G", note: "Slow blues with incredible intensity. Focus on the approachable intro phrases first." },
-  { title: "Europa", artist: "Santana", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Cm", chords: "Cm - Fm - Bb - Eb - Ab - G - Cm", note: "Lyrical, singing tone with Latin feel. Great for learning sustained melodic soloing." },
+  { title: "Crossroads (Cream Version)", artist: "Cream / Eric Clapton", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "A", chords: "A - D - A - E - D - A", note: "Clapton's legendary live solo. Essential blues-rock phrasing and speed.", strumPattern: "Blues Shuffle" },
+  { title: "Comfortably Numb (Solo)", artist: "Pink Floyd", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - Em - Bm - D - A", note: "Both solos are masterclasses in melodic lead guitar. Bending and vibrato essential.", strumPattern: "Slow Ballad" },
+  { title: "Hotel California (Solo)", artist: "Eagles", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - F# - A - E - G - D - Em - F#", note: "Harmonized dual-guitar solo. One of the most recognizable solos in rock history.", strumPattern: "Varies" },
+  { title: "All Along the Watchtower", artist: "Jimi Hendrix", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "C#m", chords: "C#m - B - A - B - C#m", note: "Lead guitar throughout the entire song. Hendrix reinvented Dylan's folk song as a guitar showcase.", strumPattern: "Driving Rock" },
+  { title: "Texas Flood", artist: "Stevie Ray Vaughan", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "G", chords: "G - C - G - D - C - G", note: "Slow blues with incredible intensity. Focus on the approachable intro phrases first.", strumPattern: "Blues Shuffle" },
+  { title: "Europa", artist: "Santana", genre: "Solo Practice", difficulty: "Intermediate", instrument: "Electric", key: "Cm", chords: "Cm - Fm - Bb - Eb - Ab - G - Cm", note: "Lyrical, singing tone with Latin feel. Great for learning sustained melodic soloing.", strumPattern: "Slow Ballad" },
   // White Stripes
-  { title: "Seven Nation Army", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "Em", chords: "Em - C - B", note: "Iconic riff. One of the simplest and most recognizable guitar lines ever written. Great for beginners." },
-  { title: "Icky Thump", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - A", note: "Heavy, aggressive riff with some tricky rhythm. Great for working on tight, punchy playing." },
-  { title: "Fell in Love with a Girl", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "D", chords: "D - B - A - D", note: "Fast, raw, 2-minute punk-blues blast. Good for building speed and energy." },
-  { title: "Dead Leaves and the Dirty Ground", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "A", chords: "A - C - D - A", note: "Crunchy blues-rock riff. Great example of Jack White's raw open-string style." },
-  { title: "Hotel Yorba", artist: "The White Stripes", genre: "Folk", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - A", note: "Simple three-chord acoustic stomper. Fun sing-along, great for strumming practice." },
-  { title: "We're Going to Be Friends", artist: "The White Stripes", genre: "Folk", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - D", note: "Sweet, simple fingerpicking pattern. Good intro to basic fingerstyle on acoustic." },
-  { title: "Conquest", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "Am - Dm - E - Am", note: "Mariachi-inspired with driving rhythm. Unique in their catalog, great for building dynamic strumming." },
-  { title: "Ball and Biscuit", artist: "The White Stripes", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E - A - B", note: "7-minute blues jam. One of Jack White's best solos. Great for extended blues improvisation practice." },
-  { title: "I Just Don't Know What to Do with Myself", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "D", chords: "D - A - Em - G", note: "Burt Bacharach cover with a massive distorted outro. Simple verse chords, dramatic build." },
-  { title: "Hardest Button to Button", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - A", note: "Relentless two-chord riff with octave jumps. Great for precision and rhythmic tightness." },
+  { title: "Seven Nation Army", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "Em", chords: "Em - C - B", note: "Iconic riff. One of the simplest and most recognizable guitar lines ever written. Great for beginners.", strumPattern: "Straight Down" },
+  { title: "Icky Thump", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Bm", chords: "Bm - A - G - A", note: "Heavy, aggressive riff with some tricky rhythm. Great for working on tight, punchy playing.", strumPattern: "Driving Rock" },
+  { title: "Fell in Love with a Girl", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "D", chords: "D - B - A - D", note: "Fast, raw, 2-minute punk-blues blast. Good for building speed and energy.", strumPattern: "Straight Down" },
+  { title: "Dead Leaves and the Dirty Ground", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "A", chords: "A - C - D - A", note: "Crunchy blues-rock riff. Great example of Jack White's raw open-string style.", strumPattern: "Driving Rock" },
+  { title: "Hotel Yorba", artist: "The White Stripes", genre: "Folk", difficulty: "Beginner", instrument: "Acoustic", key: "D", chords: "D - G - A", note: "Simple three-chord acoustic stomper. Fun sing-along, great for strumming practice.", strumPattern: "Island/Reggae" },
+  { title: "We're Going to Be Friends", artist: "The White Stripes", genre: "Folk", difficulty: "Beginner", instrument: "Acoustic", key: "G", chords: "G - C - D", note: "Sweet, simple fingerpicking pattern. Good intro to basic fingerstyle on acoustic.", strumPattern: "Fingerpicking" },
+  { title: "Conquest", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Intermediate", instrument: "Electric", key: "Am", chords: "Am - Dm - E - Am", note: "Mariachi-inspired with driving rhythm. Unique in their catalog, great for building dynamic strumming.", strumPattern: "Driving Rock" },
+  { title: "Ball and Biscuit", artist: "The White Stripes", genre: "Blues", difficulty: "Intermediate", instrument: "Electric", key: "E", chords: "E - A - B", note: "7-minute blues jam. One of Jack White's best solos. Great for extended blues improvisation practice.", strumPattern: "Blues Shuffle" },
+  { title: "I Just Don't Know What to Do with Myself", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner", instrument: "Electric", key: "D", chords: "D - A - Em - G", note: "Burt Bacharach cover with a massive distorted outro. Simple verse chords, dramatic build.", strumPattern: "Basic Folk" },
+  { title: "Hardest Button to Button", artist: "The White Stripes", genre: "Classic Rock", difficulty: "Beginner-Intermediate", instrument: "Electric", key: "E", chords: "E - A", note: "Relentless two-chord riff with octave jumps. Great for precision and rhythmic tightness.", strumPattern: "Straight Down" },
 ];
 
 // Add UG search URLs to all songs
@@ -1493,7 +1571,15 @@ SONG_DATA.forEach(s => {
 let songGenreFilter = 'All';
 let songDiffFilter = 'All';
 let songInstFilter = 'All';
+let songStrumFilter = 'All';
 let songSearchTerm = '';
+
+function toggleStrumGuide() {
+  const toggle = document.getElementById('strumGuideToggle');
+  const content = document.getElementById('strumGuideContent');
+  toggle.classList.toggle('open');
+  content.classList.toggle('open');
+}
 
 function initSongsTab() {
   const genres = ['All', 'Classic Rock', 'Blues', 'Folk/Acoustic', 'R&B/Soul', 'Jam Band', 'Solo Practice'];
@@ -1542,6 +1628,21 @@ function initSongsTab() {
     inf.appendChild(btn);
   });
 
+  const strums = ['All', 'Straight Down', 'Basic Folk', 'Island/Reggae', 'Slow Ballad', 'Driving Rock', 'Blues Shuffle', '16th Note Funk', 'Fingerpicking', 'Varies'];
+  const sf = document.getElementById('strumFilters');
+  strums.forEach(s => {
+    const btn = document.createElement('button');
+    btn.textContent = s;
+    btn.className = s === 'All' ? 'active' : '';
+    btn.onclick = () => {
+      songStrumFilter = s;
+      sf.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSongs();
+    };
+    sf.appendChild(btn);
+  });
+
   document.getElementById('songSearch').addEventListener('input', e => {
     songSearchTerm = e.target.value.toLowerCase();
     renderSongs();
@@ -1555,10 +1656,12 @@ function renderSongs() {
   if (songGenreFilter !== 'All') songs = songs.filter(s => s.genre === songGenreFilter);
   if (songDiffFilter !== 'All') songs = songs.filter(s => s.difficulty === songDiffFilter);
   if (songInstFilter !== 'All') songs = songs.filter(s => s.instrument === songInstFilter);
+  if (songStrumFilter !== 'All') songs = songs.filter(s => s.strumPattern === songStrumFilter);
   if (songSearchTerm) songs = songs.filter(s =>
     s.title.toLowerCase().includes(songSearchTerm) ||
     s.artist.toLowerCase().includes(songSearchTerm) ||
-    s.note.toLowerCase().includes(songSearchTerm)
+    s.note.toLowerCase().includes(songSearchTerm) ||
+    (s.strumPattern && s.strumPattern.toLowerCase().includes(songSearchTerm))
   );
 
   document.getElementById('songsCount').textContent = `Showing ${songs.length} of ${SONG_DATA.length} songs`;
@@ -1571,6 +1674,7 @@ function renderSongs() {
           <span class="song-tag genre">${s.genre}</span>
           <span class="song-tag difficulty">${s.difficulty}</span>
           <span class="song-tag instrument">${s.instrument}</span>
+          ${s.strumPattern ? `<span class="song-tag strum">${s.strumPattern}</span>` : ''}
         </div>
         <div class="song-note">${s.note}</div>
         ${s.chords ? `<div class="song-chords">Chords: ${s.chords}</div>` : ''}
